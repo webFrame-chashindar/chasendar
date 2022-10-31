@@ -1,0 +1,86 @@
+body {
+    background: #f9fafc;
+    height: 100vh;
+    width: 100vh;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.logoImg {
+    width: 27rem;
+    height: auto;
+    margin: auto;
+    transform: translate(10%);
+}
+.form-title {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.login-box {
+    padding: 5% 30%;
+    height: 80%;
+    width: 100%;
+}
+
+#panel {
+    background-color: white;
+    box-shadow: 0px 2px 8px rgba(72, 74, 113, 0.16);
+    height: 38rem;
+    width: 35rem;
+    padding: 10%;
+}
+
+#formPlaintextPassword {
+    height: 4rem;
+    width: 100%;
+    background: #f9fafc;
+    border: 1px solid rgba(110, 119, 141, 0.3);
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 170%;
+    /* identical to box height, or 41px */
+    /* color: rgba(110, 119, 141, 0.2); */
+}
+.form {
+    align-items: center;
+    justify-items: center;
+}
+
+.button-style {
+    margin: auto;
+    margin-top: 7rem;
+    background-color: #2b87f2;
+    height: 4rem;
+    width: 20rem;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    border: #2b87f2;
+
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.button-style > :hover {
+    margin: auto;
+    margin-top: 7rem;
+    background-color: aqua;
+    height: 4rem;
+    width: 20rem;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    border: #2b87f2;
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1rem;
+}
