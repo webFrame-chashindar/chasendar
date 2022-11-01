@@ -23,6 +23,8 @@ const EventModal = ({handleShow, show, onHide}) => {
     span.style.border = "2px solid black";
   }
 
+  
+
   return (
     <Modal
         show={show}
