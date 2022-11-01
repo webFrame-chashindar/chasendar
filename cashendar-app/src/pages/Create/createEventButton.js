@@ -6,11 +6,14 @@ import EventModal from './eventModal';
 
 export default function CreateEventButton(){
     const [showEventModal, setShowEventModal] = useState(false);
-    const [signInModalOn, setSignInModalOn] = useState(false);
+    const [showSignInModalOn, setShowSignInModalOn] = useState(false);
 
-    const handleShow = () => {
+    const handleShowEventModal = () => {
         setShowEventModal(false);
-        console.log("here");
+    }
+
+    const handleShowSignInModal = () =>{
+        setShowSignInModalOn(false);
     }
 
     return (
@@ -24,7 +27,7 @@ export default function CreateEventButton(){
                     <Nav.Link>
                     <Button
                         variant="primary"
-                        onClick={() => setSignInModalOn(true)}
+                        onClick={() => setShowSignInModalOn(true)}
                     >
                         수입/지출
                     </Button>
@@ -41,8 +44,8 @@ export default function CreateEventButton(){
                 </Navbar.Collapse>
             </Container>
             </Navbar>
-             {showEventModal && <EventModal handleShow = {handleShow} show={showEventModal} onHide={() => setShowEventModal(false)}/> }
-             {!showEventModal && <EventModal handleShow = {handleShow} show={showEventModal} onHide={() => setShowEventModal(true)}/>}
+             {showEventModal && <EventModal handleShow = {handleShowEventModal} show={showEventModal} onHide={() => setShowEventModal(false)}/> }
+             {showSignInModalOn && <SignInModal handleShow = {handleShowSignInModal} show={showSignInModalOn} onHide={() => setShowSignInModalOn(false)}/> }
              </header>
        
     //    </>
