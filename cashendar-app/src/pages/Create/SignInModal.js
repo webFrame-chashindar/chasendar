@@ -6,11 +6,15 @@ import DatePicker from "react-datepicker";
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
 const labelsColorIsSelected = [true,false,false,false,false ];
 
+const labelsCategory = ["food", "shopping", "ect"];
+
 const SignInModal = ({handleShow, show, onHide}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [startDate, setStartDate] = useState('');
     const [selColor, setSelColor] = useState('');
+    const [isPlus,setIsPlus] = useState(true);
+    const [selCategory, setSelCategory] = useState('');
 
     const datePickerStyle = {
         display : "inline-block",
@@ -35,7 +39,19 @@ const SignInModal = ({handleShow, show, onHide}) => {
                 <Modal.Title id="contained-modal-title-vcenter">Create New Finance</Modal.Title>
             </Modal.Header>
 
+            
             <Modal.Body>
+                <Button block variant="info" 
+                        type="button" 
+                        className="my-3 m-3"
+                        onClick={() => setIsPlus(true)}> 수입
+                </Button> 
+                <Button block variant="info" 
+                        type="button" 
+                        className="my-3 m-3"
+                        onClick={() => setIsPlus(false)}> 지출
+                </Button> 
+                {isPlus && 
                 <Form>
                     <Form.Group>
                         <Form.Label>수입 등록</Form.Label>
@@ -46,6 +62,43 @@ const SignInModal = ({handleShow, show, onHide}) => {
                             />
                     </Form.Group>
 
+                    <Form.Group style={datePickerStyle}>
+                        <Form.Label>날짜 등록</Form.Label>
+                            <DatePicker 
+                            className = "form-control"
+                            selected={startDate}
+                            dateFormat="yyyy-MM-dd"
+                            onChange= {date => setStartDate(date)} />
+                    </Form.Group >
+
+                    <Form.Group>
+                        
+                        <Form.Label>카테고리</Form.Label>
+                        <div>
+                            {labelsCategory.map((lblClass, i) => (
+                                <span
+                                    key={i}
+                                    onClick={() => {setSelColor(lblClass); 
+                                        {(lblClass === selColor &&labelsColorIsSelected[i] === true) ? labelsColorIsSelected[i] = false : labelsColorIsSelected[i] = true };
+                                    }}
+                                    className={(lblClass === selColor && labelsColorIsSelected[i]) ? `border border-5 top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white` : `top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white`}               
+                                >
+                                </span>
+                            ))}
+                        </div>
+                        
+                    </Form.Group>
+
+                    <Button block variant="info" 
+                            type="submit" 
+                            className="my-3"
+                            onClick={() => handleShow()}> 수입/지출 등록
+                    </Button> 
+                </Form>
+                }
+
+                {!isPlus && 
+                <Form>
                     <Form.Group>
                         <Form.Label>지출 등록</Form.Label>
                         <Form.Control 
@@ -88,6 +141,7 @@ const SignInModal = ({handleShow, show, onHide}) => {
                             onClick={() => handleShow()}> 수입/지출 등록
                     </Button> 
                 </Form>
+                }
                 </Modal.Body>
           </Container>
       </Modal>
