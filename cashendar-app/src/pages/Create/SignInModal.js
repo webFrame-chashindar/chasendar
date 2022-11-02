@@ -3,17 +3,19 @@ import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
 import DatePicker from "react-datepicker";
 
-const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
-const labelsColorIsSelected = [true,false,false,false,false ];
+const colorClasses = ["primary","secondary", "info", "warning", "danger"];
+const colorIsSelected = [true,false,false,false,false ];
 
-const labelsCategory = ["food", "shopping", "ect"];
+// const incomeCategoryClasses = ["food", "shopping", "ect"];
+// const incomeCategoryIsSelected = [true, false, false];
 
 const SignInModal = ({handleShow, show, onHide}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [startDate, setStartDate] = useState('');
-    const [selColor, setSelColor] = useState('');
+
     const [isPlus,setIsPlus] = useState(true);
+    const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
 
     const datePickerStyle = {
@@ -24,6 +26,10 @@ const SignInModal = ({handleShow, show, onHide}) => {
     const selectColor = (span) => {
         console.log("here");
         span.style.border = "2px solid black";
+    }
+
+    const categorySelected = (e) => {
+        setSelCategory(e.target.value);
     }
   
   return (
@@ -51,10 +57,12 @@ const SignInModal = ({handleShow, show, onHide}) => {
                         className="my-3 m-3"
                         onClick={() => setIsPlus(false)}> 지출
                 </Button> 
+                
+                
                 {isPlus && 
                 <Form>
                     <Form.Group>
-                        <Form.Label>수입 등록</Form.Label>
+                        <Form.Label>수입 금액</Form.Label>
                         <Form.Control 
                             type="text"
                             name="title"
@@ -71,21 +79,15 @@ const SignInModal = ({handleShow, show, onHide}) => {
                             onChange= {date => setStartDate(date)} />
                     </Form.Group >
 
+
                     <Form.Group>
-                        
                         <Form.Label>카테고리</Form.Label>
-                        <div>
-                            {labelsCategory.map((lblClass, i) => (
-                                <span
-                                    key={i}
-                                    onClick={() => {setSelColor(lblClass); 
-                                        {(lblClass === selColor &&labelsColorIsSelected[i] === true) ? labelsColorIsSelected[i] = false : labelsColorIsSelected[i] = true };
-                                    }}
-                                    className={(lblClass === selColor && labelsColorIsSelected[i]) ? `border border-5 top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white` : `top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white`}               
-                                >
-                                </span>
-                            ))}
-                        </div>
+                        <Form.Select onChange={categorySelected}>
+                            <option>수입 카테고리를 선택하세요</option>
+                            <option value="food">음식</option>
+                            <option value="shooping">쇼핑</option>
+                            <option value="etc">기타</option>
+                        </Form.Select>
                         
                     </Form.Group>
 
@@ -100,7 +102,7 @@ const SignInModal = ({handleShow, show, onHide}) => {
                 {!isPlus && 
                 <Form>
                     <Form.Group>
-                        <Form.Label>지출 등록</Form.Label>
+                        <Form.Label>지출 금액</Form.Label>
                         <Form.Control 
                             type="text"
                             name="title"
@@ -118,27 +120,22 @@ const SignInModal = ({handleShow, show, onHide}) => {
                     </Form.Group >
 
                     <Form.Group>
-                        
-                        <Form.Label>수입/지출등록 색상</Form.Label>
-                        <div>
-                            {labelsColorClasses.map((lblClass, i) => (
-                                <span
-                                    key={i}
-                                    onClick={() => {setSelColor(lblClass); 
-                                        {(lblClass === selColor &&labelsColorIsSelected[i] === true) ? labelsColorIsSelected[i] = false : labelsColorIsSelected[i] = true };
-                                    }}
-                                    className={(lblClass === selColor && labelsColorIsSelected[i]) ? `border border-5 top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white` : `top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white`}               
-                                >
-                                </span>
-                            ))}
-                        </div>
+                        <Form.Label>카테고리</Form.Label>
+                        <Form.Select onChange={categorySelected}>
+                            <option>수입 카테고리를 선택하세요</option>
+                            <option value="food">음식</option>
+                            <option value="shooping">쇼핑</option>
+                            <option value="etc">기타</option>
+                        </Form.Select>
                         
                     </Form.Group>
+
+
 
                     <Button block variant="info" 
                             type="submit" 
                             className="my-3"
-                            onClick={() => handleShow()}> 수입/지출 등록
+                            onClick={() => handleShow()}> 지출 등록
                     </Button> 
                 </Form>
                 }
