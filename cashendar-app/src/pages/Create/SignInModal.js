@@ -83,9 +83,11 @@ const SignInModal = ({handleShow, show, onHide}) => {
                     <Form.Group>
                         <Form.Label>카테고리</Form.Label>
                         <Form.Select onChange={categorySelected}>
-                            <option>수입 카테고리를 선택하세요</option>
+                            <option>지출 카테고리를 선택하세요</option>
                             <option value="food">음식</option>
-                            <option value="shooping">쇼핑</option>
+                            <option value="culture">문화</option>
+                            <option value="traffic">교통비</option>
+                            <option value="doc">의료/건강</option>
                             <option value="etc">기타</option>
                         </Form.Select>
                         
@@ -94,7 +96,7 @@ const SignInModal = ({handleShow, show, onHide}) => {
                     <Button block variant="info" 
                             type="submit" 
                             className="my-3"
-                            onClick={() => handleShow()}> 수입/지출 등록
+                            onClick={() => handleShow()}> 수입 등록
                     </Button> 
                 </Form>
                 }
@@ -123,14 +125,14 @@ const SignInModal = ({handleShow, show, onHide}) => {
                         <Form.Label>카테고리</Form.Label>
                         <Form.Select onChange={categorySelected}>
                             <option>수입 카테고리를 선택하세요</option>
-                            <option value="food">음식</option>
-                            <option value="shooping">쇼핑</option>
+                            <option value="pay">월급</option>
+                            <option value="pocket">용돈</option>
+                            <option value="fin">금융 수입</option>
+                            <option value="business">사업 수익</option>
                             <option value="etc">기타</option>
                         </Form.Select>
                         
                     </Form.Group>
-
-
 
                     <Button block variant="info" 
                             type="submit" 
