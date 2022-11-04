@@ -1,0 +1,9 @@
+#FullCalendar{
+    display: inline-block;
+    width: 80%;
+}
+#Detail{
+    display: inline-block;
+    width: 20%;
+    background-color: aqua;
+}
