@@ -1,7 +1,10 @@
 import React, { useState, useEffect} from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
+import { db } from "../../fbase/fbase";
 import DatePicker from "react-datepicker";
+import TimePicker from 'react-time-picker';
+
 
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
 const labelsColorIsSelected = [true,false,false,false,false ];
@@ -9,19 +12,28 @@ const labelsColorIsSelected = [true,false,false,false,false ];
 const EventModal = ({handleShow, show, onHide}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(); 
+  const [endDate, setEndDate] = useState(); 
+  const [startTime, setStartTime] = useState(); 
+  const [endTime, setEndTime] = useState(); 
   const [selColor, setSelColor] = useState('');
 
-  const datePickerStyle = {
+  const datePickerFormStyle = {
     display : "inline-block",
     marginRight: "40px"
   }
+
 
   const selectColor = (span) => {
     console.log("here");
     span.style.border = "2px solid black";
   }
+
+  const func = function(){
+    ('.datepicker').datepicker({
+       format: 'mm-dd-yyyy'
+     });
+ };
 
   
 
@@ -60,23 +72,33 @@ const EventModal = ({handleShow, show, onHide}) => {
                             onChange={(e) => setDescription(e.target.value)} />
                     </Form.Group>
 
-                    <Form.Group style={datePickerStyle}>
+                    <Form.Group style={datePickerFormStyle}>
                         <Form.Label>시작 날짜</Form.Label>
-                            <DatePicker 
+                        <DatePicker 
                             className = "form-control"
                             selected={startDate}
-                            dateFormat="yyyy-MM-dd"
-                            onChange= {date => setStartDate(date)} />
-                    </Form.Group >
+                            dateFormat="yyyy-MM-dd HH:mm"    
+                            onChange= {date => setStartDate(date)}
+                            showTimeSelect
+                            timeFormat="HH:mm"
+                            timeCaption="time"
+                            timeIntervals={10} />
+                    </Form.Group>
 
-                    <Form.Group style={datePickerStyle}>
+
+                    <Form.Group style={datePickerFormStyle}>
                         <Form.Label>종료 날짜</Form.Label>
-                            <DatePicker
+                        <DatePicker 
                             className = "form-control"
                             selected={endDate}
-                            dateFormat="yyyy-MM-dd"
-                            onChange={date => setEndDate(date)} />
+                            dateFormat="yyyy-MM-dd HH:mm"    
+                            onChange= {date => setEndDate(date)}
+                            showTimeSelect
+                            timeFormat="HH:mm"
+                            timeCaption="time"
+                            timeIntervals={10} />
                     </Form.Group>
+
 
                     <Form.Group>
                         
@@ -113,3 +135,9 @@ export default EventModal;
 
 
 
+
+{/* <DatePicker 
+                            className = "form-control"
+                            selected={startDate}
+                            dateFormat="yyyy-MM-dd"
+                            onChange= {date => setStartDate(date)} /> */}

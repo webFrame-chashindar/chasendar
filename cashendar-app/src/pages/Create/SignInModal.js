@@ -23,11 +23,6 @@ const SignInModal = ({handleShow, show, onHide}) => {
         marginRight: "40px"
     }
 
-    const selectColor = (span) => {
-        console.log("here");
-        span.style.border = "2px solid black";
-    }
-
     const categorySelected = (e) => {
         setSelCategory(e.target.value);
     }
