@@ -7,3 +7,16 @@
     width: 20%;
     background-color: aqua;
 }
+.fc-today-button{
+    background-color: #4682B4 !important;
+    /* background-color: #1E90FF !important; */
+    background-image: none !important;
+}
+.fc-prev-button, .fc-next-button{
+    background-color: #AFEEEE !important;
+    /* background-color: #90EE90 !important; */
+    background-image: none !important;
+}
+.fc-day-today {
+    background: #E0F8F1 !important;
+}
