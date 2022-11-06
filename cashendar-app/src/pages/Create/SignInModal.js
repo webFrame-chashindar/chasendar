@@ -2,21 +2,22 @@ import React, { useState, useEffect} from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
 import DatePicker from "react-datepicker";
+import { db } from "../../fbase/fbase";
+import { addDoc, Firestore } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
-const colorIsSelected = [true,false,false,false,false ];
-
-// const incomeCategoryClasses = ["food", "shopping", "ect"];
-// const incomeCategoryIsSelected = [true, false, false];
+// const colorIsSelected = [true,false,false,false,false ];
 
 const SignInModal = ({handleShow, show, onHide}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [startDate, setStartDate] = useState('');
+    const [date, setDate] = useState('');
 
     const [isPlus,setIsPlus] = useState(true);
     const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
+    const [categoryCnt, setCategoryCnt] = useState([0,0,0,0,0]);
 
     const datePickerStyle = {
         display : "inline-block",
@@ -26,6 +27,24 @@ const SignInModal = ({handleShow, show, onHide}) => {
     const categorySelected = (e) => {
         setSelCategory(e.target.value);
     }
+
+    const eventCollctionRef = collection(db, "finance");
+    const saveFinance = async () => {
+    await addDoc(eventCollctionRef, 
+        {title : title,
+        description : description,
+        date : date,
+        isPlus : isPlus,
+        color : selColor,
+        category : selCategory});
+    setTitle("");
+    setDescription("");
+    setIsPlus(true);
+    setSelCategory("");
+    setDate("");
+    setSelCategory("");
+ };
+
   
   return (
     <Modal
@@ -69,9 +88,9 @@ const SignInModal = ({handleShow, show, onHide}) => {
                         <Form.Label>날짜 등록</Form.Label>
                             <DatePicker 
                             className = "form-control"
-                            selected={startDate}
+                            selected={date}
                             dateFormat="yyyy-MM-dd"
-                            onChange= {date => setStartDate(date)} />
+                            onChange= {date => setDate(date)} />
                     </Form.Group >
 
 
@@ -79,7 +98,7 @@ const SignInModal = ({handleShow, show, onHide}) => {
                         <Form.Label>카테고리</Form.Label>
                         <Form.Select onChange={categorySelected}>
                             <option>지출 카테고리를 선택하세요</option>
-                            <option value="food">음식</option>
+                            <option value="food" >음식</option>
                             <option value="culture">문화</option>
                             <option value="traffic">교통비</option>
                             <option value="doc">의료/건강</option>
@@ -91,7 +110,10 @@ const SignInModal = ({handleShow, show, onHide}) => {
                     <Button block variant="info" 
                             type="submit" 
                             className="my-3"
-                            onClick={() => handleShow()}> 수입 등록
+                            onClick={() => {
+                                {saveFinance()};
+                                {handleShow()};
+                            }}> 수입 등록
                     </Button> 
                 </Form>
                 }
@@ -111,9 +133,9 @@ const SignInModal = ({handleShow, show, onHide}) => {
                         <Form.Label>날짜 등록</Form.Label>
                             <DatePicker 
                             className = "form-control"
-                            selected={startDate}
+                            selected={date}
                             dateFormat="yyyy-MM-dd"
-                            onChange= {date => setStartDate(date)} />
+                            onChange= {date => setDate(date)} />
                     </Form.Group >
 
                     <Form.Group>
@@ -132,7 +154,10 @@ const SignInModal = ({handleShow, show, onHide}) => {
                     <Button block variant="info" 
                             type="submit" 
                             className="my-3"
-                            onClick={() => handleShow()}> 지출 등록
+                            onClick={() => {
+                                {saveFinance()};
+                                {handleShow()};
+                            }}> 지출 등록
                     </Button> 
                 </Form>
                 }

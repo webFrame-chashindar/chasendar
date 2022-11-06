@@ -4,6 +4,9 @@ import "react-datepicker/dist/react-datepicker.css"
 import { db } from "../../fbase/fbase";
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-time-picker';
+import { FirebaseError } from "firebase/app";
+import { addDoc, Firestore } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 
 
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
@@ -35,6 +38,21 @@ const EventModal = ({handleShow, show, onHide}) => {
      });
  };
 
+const eventCollctionRef = collection(db, "plan");
+const saveEvent = async () => {
+    await addDoc(eventCollctionRef, 
+        {title : title,
+        description : description,
+        startDate : startDate,
+        endDate : endDate,
+        color: selColor});
+    setTitle("");
+    setDescription("");
+    setStartDate("");
+    setEndDate("");
+    setSelColor("");
+ };
+
   
 
   return (
@@ -59,7 +77,7 @@ const EventModal = ({handleShow, show, onHide}) => {
                             name="title"
                             placeholder="일정의 제목을 입력하세요."
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}/>
+                            onChange={(e) => {setTitle(e.target.value)}}/>
                     </Form.Group>
 
                     <Form.Group>
@@ -69,7 +87,7 @@ const EventModal = ({handleShow, show, onHide}) => {
                             name="description"
                             placeholder="일정에 대한 설명을 입력하세요."
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)} />
+                            onChange={(e) => {setDescription(e.target.value)}} />
                     </Form.Group>
 
                     <Form.Group style={datePickerFormStyle}>
@@ -78,7 +96,7 @@ const EventModal = ({handleShow, show, onHide}) => {
                             className = "form-control"
                             selected={startDate}
                             dateFormat="yyyy-MM-dd HH:mm"    
-                            onChange= {date => setStartDate(date)}
+                            onChange= {date => {setStartDate(date)}}
                             showTimeSelect
                             timeFormat="HH:mm"
                             timeCaption="time"
@@ -92,7 +110,7 @@ const EventModal = ({handleShow, show, onHide}) => {
                             className = "form-control"
                             selected={endDate}
                             dateFormat="yyyy-MM-dd HH:mm"    
-                            onChange= {date => setEndDate(date)}
+                            onChange= {date => {setEndDate(date)}}
                             showTimeSelect
                             timeFormat="HH:mm"
                             timeCaption="time"
@@ -107,7 +125,7 @@ const EventModal = ({handleShow, show, onHide}) => {
                             {labelsColorClasses.map((lblClass, i) => (
                                 <span
                                     key={i}
-                                    onClick={() => {setSelColor(lblClass); 
+                                    onClick={() => {{setSelColor(lblClass);} 
                                         {(lblClass === selColor &&labelsColorIsSelected[i] === true) ? labelsColorIsSelected[i] = false : labelsColorIsSelected[i] = true };
                                     }}
                                     className={(lblClass === selColor && labelsColorIsSelected[i]) ? `border border-5 top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white` : `top-sticky float-left d-inline-flex m-3 p-3 bg-${lblClass} rounded-circle text-white`}               
@@ -119,9 +137,11 @@ const EventModal = ({handleShow, show, onHide}) => {
                     </Form.Group>
 
                     <Button block variant="info" 
-                            type="submit" 
                             className="my-3"
-                            onClick={() => handleShow()}> 일정 등록
+                            onClick={() => {
+                                {saveEvent()};
+                                {handleShow()};
+                            }}> 일정 등록
                     </Button> 
                 </Form>
                 </Modal.Body>
@@ -132,12 +152,3 @@ const EventModal = ({handleShow, show, onHide}) => {
 
 
 export default EventModal;
-
-
-
-
-{/* <DatePicker 
-                            className = "form-control"
-                            selected={startDate}
-                            dateFormat="yyyy-MM-dd"
-                            onChange= {date => setStartDate(date)} /> */}
