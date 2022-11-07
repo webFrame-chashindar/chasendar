@@ -3,16 +3,14 @@ import React, { useState } from "react";
 import LoginComponent from "./LoginComponent";
 import Logout from "./Logout";
 
-function Login() {
-    const [currentUser, setUser] = useState();
-
-    if (!currentUser) {
-        return <LoginComponent setUser={setUser} />;
+function Login(props) {
+    if (!props.currentUser) {
+        return <LoginComponent setUser={props.setUser} />;
     } else {
         return (
             <>
                 <h3>{currentUser}</h3>
-                <Logout setUser={setUser} />
+                <Logout setUser={props.setUser} />
             </>
         );
     }
