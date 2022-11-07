@@ -1,22 +1,68 @@
-#FullCalendar{
-    display: inline-block;
+#Flagment {
+    float: left;
+}
+
+#FullCalendar {
+    float: left;
     width: 80%;
 }
-#Detail{
-    display: inline-block;
+
+#Detail {
+    float: left;
     width: 20%;
-    background-color: aqua;
+    height: 100vh;
+    background-color: rgb(221, 248, 248);
 }
-.fc-today-button{
-    background-color: #4682B4 !important;
+
+#TodaySchedule {
+    height: 45%;
+    background-color: #3eacd7;
+    margin: 5px 25px;
+}
+
+#TodayInOut {
+    height: 45%;
+    background-color: #5fb7b7;
+    margin: 5px 25px;
+}
+
+#daySchedule {
+    color: white;
+}
+
+#dayInOut {
+    color: white;
+}
+
+li {
+    color: white;
+}
+
+.fc-today-button {
+    background-color: #468cb4 !important;
     /* background-color: #1E90FF !important; */
     background-image: none !important;
 }
-.fc-prev-button, .fc-next-button{
+
+.fc-prev-button,
+.fc-next-button {
     background-color: #AFEEEE !important;
     /* background-color: #90EE90 !important; */
     background-image: none !important;
 }
+
 .fc-day-today {
     background: #E0F8F1 !important;
+}
+
+.fc-custom1-button {
+    background: #90EE90 !important;
+}
+
+.fc-highlight {
+    background: #e4fce4 !important;
+}
+
+.fc td {
+    height: 130px !important
 }
