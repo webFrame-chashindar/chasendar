@@ -12,15 +12,16 @@ import EventModal from "./pages/Create/eventModal";
 function App() {
     const [currentUser, setUser] = useState();
     if (!currentUser) {
-        return <LoginComponent csetUser={setUser} />;
+        return <LoginComponent setUser={setUser} />;
     } else {
         return (
             <>
+                <h3>{currentUser}</h3>
                 <Logout />
                 <Calendar />
                 <Stats />
                 <DateSelected />
-                <CreateEventButton />
+                <CreateEventButton user={currentUser} />
             </>
         );
     }
