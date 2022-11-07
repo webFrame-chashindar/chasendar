@@ -8,11 +8,10 @@ import { FirebaseError } from "firebase/app";
 import { addDoc, Firestore } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 
-
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
 const labelsColorIsSelected = [true,false,false,false,false ];
 
-const EventModal = ({handleShow, show, onHide}) => {
+const EventModal = ({user, handleShow, show, onHide}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(); 
@@ -41,7 +40,8 @@ const EventModal = ({handleShow, show, onHide}) => {
 const eventCollctionRef = collection(db, "plan");
 const saveEvent = async () => {
     await addDoc(eventCollctionRef, 
-        {title : title,
+        {user : user,
+        title : title,
         description : description,
         startDate : startDate,
         endDate : endDate,
@@ -52,8 +52,6 @@ const saveEvent = async () => {
     setEndDate("");
     setSelColor("");
  };
-
-  
 
   return (
     <Modal

@@ -4,7 +4,7 @@ import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SignInModal from './SignInModal'; //일단 넣어놓음
 import EventModal from './eventModal';
 
-export default function CreateEventButton(){
+export default function CreateEventButton({user}){
     const [showEventModal, setShowEventModal] = useState(false);
     const [showSignInModalOn, setShowSignInModalOn] = useState(false);
 
@@ -44,8 +44,8 @@ export default function CreateEventButton(){
                 </Navbar.Collapse>
             </Container>
             </Navbar>
-             {showEventModal && <EventModal handleShow = {handleShowEventModal} show={showEventModal} onHide={() => setShowEventModal(false)}/> }
-             {showSignInModalOn && <SignInModal handleShow = {handleShowSignInModal} show={showSignInModalOn} onHide={() => setShowSignInModalOn(false)}/> }
+             {showEventModal && <EventModal user = {user} handleShow = {handleShowEventModal} show={showEventModal} onHide={() => setShowEventModal(false)}/> }
+             {showSignInModalOn && <SignInModal user = {user} handleShow = {handleShowSignInModal} show={showSignInModalOn} onHide={() => setShowSignInModalOn(false)}/> }
              </header>
        
     //    </>

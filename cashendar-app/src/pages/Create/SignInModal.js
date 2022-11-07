@@ -9,7 +9,7 @@ import { collection } from "firebase/firestore";
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
 // const colorIsSelected = [true,false,false,false,false ];
 
-const SignInModal = ({handleShow, show, onHide}) => {
+const SignInModal = ({user, handleShow, show, onHide}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -31,7 +31,8 @@ const SignInModal = ({handleShow, show, onHide}) => {
     const eventCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
     await addDoc(eventCollctionRef, 
-        {title : title,
+        {user : user,
+        title : title,
         description : description,
         date : date,
         isPlus : isPlus,
