@@ -42,15 +42,15 @@ var dummyInOutEvents = [
 function Calendar() {
   // 날짜 상태 (오늘의 날짜를 초기값) + 한국 기준 시간으로 변경
   const [ScheduleDate, setScheduleDate] = useState(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
-  const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더
-  //console.log(ScheduleDate);
+  const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
 
   // 선택한 모드에 따라 출력할 캘린더 변경
   if (SelectCalendar === 1) {
     Events = dummyScheduleEvents;
   }
-  else
+  else {
     Events = dummyInOutEvents;
+  }
 
   return (
     <>
@@ -66,7 +66,6 @@ function Calendar() {
             right: 'custom1'
           }}
           dateClick={function (info) {
-            //alert('Clicked on: ' + info.dateStr);
             setScheduleDate(info.dateStr);
           }}
           // 달력에 표시될 캘린더
@@ -74,10 +73,10 @@ function Calendar() {
             Events
           }
           selectable='true'
-          dayMaxEvents='true' // for all non-TimeGrid views
+          dayMaxEvents='true' // 달력에 나올 이벤트 갯수 제한
           views={{
             dayGridMonth: {
-              dayMaxEvents: 3 // adjust to 6 only for timeGridWeek/timeGridDay
+              dayMaxEvents: 3 // 이벤트 갯수가 3개를 넘어가면 +more 표시
             }
           }}
           customButtons={{
@@ -85,12 +84,13 @@ function Calendar() {
               text: 'Change View',
               click:
                 function () {
-                  //alert(SelectCalendar);
                   // 클릭시 달력 출력 모드를 변경한다
-                  if (SelectCalendar === 1)
+                  if (SelectCalendar === 1) {
                     setSelectCalendar(2);
-                  else
+                  }
+                  else {
                     setSelectCalendar(1);
+                  }
                 }
               ,
             },
@@ -98,22 +98,21 @@ function Calendar() {
         />
       </div>
       <div id="Detail">
+        <h3 id="TodayDate">Date: {ScheduleDate}</h3>
         <div id="TodaySchedule">
-          <h3 id="daySchedule">오늘의 일정</h3>
+          <h3 id="daySchedule">일정</h3>
           <ul>
             {dummyScheduleEvents.filter(item => item.date === ScheduleDate)
               .map((item, i) => {
-                console.log(item.title);
                 return <li key={i}>{item.title}</li>;
               })}
           </ul>
         </div>
         <div id="TodayInOut">
-          <h3 id="dayInOut">오늘의 수입과 지출</h3>
+          <h3 id="dayInOut">수입과 지출</h3>
           <ul>
             {dummyInOutEvents.filter(item => item.date === ScheduleDate)
               .map((item, i) => {
-                console.log(item.title);
                 return <li key={i}>{item.title}</li>;
               })}
           </ul>
@@ -124,19 +123,3 @@ function Calendar() {
 }
 
 export default Calendar;
-
-// 나중에 쓸지도 모르는 코드
-// 클릭 알림창
-// Swal.fire({
-//   title: 'Date',
-//   text: arg.dateStr,
-//   type: 'success',
-// })
-// 원형
-// dateClick: function(info) {
-//   alert('Clicked on: ' + info.dateStr);
-//   alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-//   alert('Current view: ' + info.view.type);
-//   // change the day's background color just for fun
-//   info.dayEl.style.backgroundColor = 'red';
-// }
