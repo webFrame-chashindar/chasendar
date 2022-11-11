@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction' // 달력에서 day클릭을 위해
+import {db} from '../../fbase/fbase';
+import { collection, getDocs } from 'firebase/firestore';
 import "./calendar.css"
 
 // 한국 시간으로 맞추기 전 Date 객체
@@ -39,10 +41,15 @@ var dummyInOutEvents = [
   { title: '+ 20000', date: '2022-11-09' }
 ]
 
-function Calendar() {
+
+function Calendar({user}) {
   // 날짜 상태 (오늘의 날짜를 초기값) + 한국 기준 시간으로 변경
   const [ScheduleDate, setScheduleDate] = useState(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
+  //const dateeee = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0, 10)
+  //console.log(d);
+  //console.log(dateeee);
   const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
+  const [eventList, setEventList] = useState([]);
 
   // 선택한 모드에 따라 출력할 캘린더 변경
   if (SelectCalendar === 1) {
@@ -52,6 +59,25 @@ function Calendar() {
     Events = dummyInOutEvents;
   }
 
+  // 
+  const planCollection = collection(db, "plan");
+  useEffect(() => {
+    const getPlan = async () => {
+      const data = await getDocs(planCollection);
+      //console.log(data);
+      const dataList = data.docs.map((doc)=>({ ...doc.data(), id: doc.id}))
+      //const filterList = eventList.filter(value=>value.user === {user});
+      const PlanList = dataList.map((value)=>({title: value.title, date: value.startDate.toDate().toISOString().slice(0,10), start: value.startDate.toDate().toISOString().slice(0,10), end: value.endDate.toDate().toISOString().slice(0,10), user: value.user}))
+
+      console.log(PlanList); 
+      setEventList(PlanList.filter(value => value.user === user));
+      console.log(eventList);
+    };
+
+   getPlan();
+  },[]);
+
+  
   return (
     <>
       <div id="FullCalendar">
@@ -70,7 +96,8 @@ function Calendar() {
           }}
           // 달력에 표시될 캘린더
           events={
-            Events
+            //Events
+            eventList
           }
           selectable='true'
           dayMaxEvents='true' // 달력에 나올 이벤트 갯수 제한

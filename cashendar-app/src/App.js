@@ -18,7 +18,7 @@ function App() {
             <>
                 <h3>{currentUser}</h3>
                 <Logout />
-                <Calendar />
+                <Calendar user={currentUser}/>
                 <Stats />
                 <DateSelected />
                 <CreateEventButton user={currentUser} />
