@@ -1,10 +1,12 @@
 
 import React, { useState } from "react";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
-import SignInModal from './SignInModal'; //일단 넣어놓음
+import SignInModal from './SignInModal'; 
 import EventModal from './eventModal';
+import { db } from "../../fbase/fbase";
+import { setDoc, doc } from "firebase/firestore";
 
-export default function CreateEventButton({user}){
+export default function CreateEventButton({user, defaultBudget, setDefaultBudget, remainBudget, setRemainBudget}){
     const [showEventModal, setShowEventModal] = useState(false);
     const [showSignInModalOn, setShowSignInModalOn] = useState(false);
 
@@ -16,7 +18,17 @@ export default function CreateEventButton({user}){
         setShowSignInModalOn(false);
     }
 
+    //사용자 예산 저장 -> 미완성
+    // const saveUserInfo = async () => {
+    //     console.log(`save userInfo : ${user}`)
+    //     await setDoc(doc(db, "userInfo", {user}), {
+    //        user : {user},
+    //        budget : defaultBudget
+    //     });
+    //   };
+
     return (
+        <>
         <header>
             <Navbar bg="light" expand="lg">
             <Container>
@@ -45,11 +57,10 @@ export default function CreateEventButton({user}){
             </Container>
             </Navbar>
              {showEventModal && <EventModal user = {user} handleShow = {handleShowEventModal} show={showEventModal} onHide={() => setShowEventModal(false)}/> }
-             {showSignInModalOn && <SignInModal user = {user} handleShow = {handleShowSignInModal} show={showSignInModalOn} onHide={() => setShowSignInModalOn(false)}/> }
-             </header>
-       
-    //    </>
-  );
+             {showSignInModalOn && <SignInModal user = {user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget= {remainBudget} setRemainBudget = {setRemainBudget} handleShow = {handleShowSignInModal} show={showSignInModalOn} onHide={() => setShowSignInModalOn(false)}/> }
+        </header>
+        </>
+    );
 }
   
 

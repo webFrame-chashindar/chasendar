@@ -9,8 +9,13 @@ import DateSelected from "./pages/DateSelected/dateselected";
 import CreateEventButton from "./pages/Create/createEventButton";
 import EventModal from "./pages/Create/eventModal";
 
+
+
 function App() {
     const [currentUser, setUser] = useState();
+    const [defaultBudget, setDefaultBudget] = useState(100000);
+    const [remainBudget, setRemainBudget] = useState(defaultBudget);
+
     if (!currentUser) {
         return <LoginComponent setUser={setUser} />;
     } else {
@@ -18,12 +23,12 @@ function App() {
             <>
                 <h3>{currentUser}</h3>
                 <Logout />
-                <Calendar user={currentUser}/>
+                <Calendar user={currentUser} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget= {remainBudget} />
                 <Stats />
-                <DateSelected />
-                <CreateEventButton user={currentUser} />
+                <CreateEventButton user={currentUser} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget= {remainBudget} setRemainBudget = {setRemainBudget} />
             </>
         );
     }
 }
+
 export default App;

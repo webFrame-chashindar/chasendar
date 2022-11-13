@@ -5,6 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction' // 달력에서 day클
 import {db} from '../../fbase/fbase';
 import { collection, getDocs } from 'firebase/firestore';
 import "./calendar.css"
+import DateSelected from "../DateSelected/dateselected";
 
 // 한국 시간으로 맞추기 전 Date 객체
 var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
@@ -42,11 +43,15 @@ var dummyInOutEvents = [
 ]
 
 
-function Calendar({user}) {
+function Calendar({user, defaultBudget, setDefaultBudget, remainBudget}) {
   // 날짜 상태 (오늘의 날짜를 초기값) + 한국 기준 시간으로 변경
   const [ScheduleDate, setScheduleDate] = useState(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
   const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
   const [eventList, setEventList] = useState([]);
+  const [selectedDate, selSelectedDate] = useState(false);
+
+  var planList = [];
+  // const eventList = [];
 
   // 선택한 모드에 따라 출력할 캘린더 변경
   if (SelectCalendar === 1) {
@@ -62,7 +67,7 @@ function Calendar({user}) {
       const data = await getDocs(planCollection);
       //console.log(data);
       const dataList = data.docs.map((doc)=>({ ...doc.data(), id: doc.id}))
-      const PlanList = dataList.map(
+      planList = dataList.map(
         (value)=>({
           title: value.title, 
           start: (value.startDate).toDate().toISOString(), 
@@ -73,8 +78,9 @@ function Calendar({user}) {
           backgroundColor: value.color,
           borderColor : value.color
         }))
-      console.log(PlanList); 
-      setEventList(PlanList.filter(value => value.user === user));
+      console.log(planList); 
+      setEventList(planList.filter(value => value.user === user));
+      // eventList = planList.filter(plan => plan.user === user);
       console.log(eventList);
     };
    getPlan();
@@ -95,7 +101,14 @@ function Calendar({user}) {
             right: 'custom1'
           }}
           dateClick={function (info) {
-            setScheduleDate(info.dateStr);
+            if(selectedDate) {
+              selSelectedDate(false)
+            }
+            else{
+              selSelectedDate(true);
+              setScheduleDate(info.dateStr);
+            }
+            
           }}
           // 달력에 표시될 캘린더
           events={
@@ -127,6 +140,7 @@ function Calendar({user}) {
           }}
         />
       </div>
+      {selectedDate && 
       <div id="Detail">
         <h3 id="TodayDate">Date: {ScheduleDate}</h3>
         <div id="TodaySchedule">
@@ -151,6 +165,8 @@ function Calendar({user}) {
           </ul>
         </div>
       </div>
+      }   
+      {!selectedDate && <DateSelected user={user} eventList={eventList} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget = {remainBudget} curMonth = {new Date().getMonth() + 1}/>}  
     </>
   )
 }

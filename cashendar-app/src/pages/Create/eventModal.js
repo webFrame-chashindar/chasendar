@@ -16,8 +16,6 @@ const EventModal = ({user, handleShow, show, onHide}) => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(); 
   const [endDate, setEndDate] = useState(); 
-  const [startTime, setStartTime] = useState(); 
-  const [endTime, setEndTime] = useState(); 
   const [selColor, setSelColor] = useState('');
 
   const datePickerFormStyle = {
@@ -115,9 +113,7 @@ const saveEvent = async () => {
                             timeIntervals={10} />
                     </Form.Group>
 
-
-                    <Form.Group>
-                        
+                    <Form.Group>  
                         <Form.Label>일정 색상</Form.Label>
                         <div>
                             {labelsColorClasses.map((lblClass, i) => (
@@ -131,7 +127,6 @@ const saveEvent = async () => {
                                 </span>
                             ))}
                         </div>
-                        
                     </Form.Group>
 
                     <Button block variant="info" 

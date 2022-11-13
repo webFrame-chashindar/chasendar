@@ -9,15 +9,19 @@ import { collection } from "firebase/firestore";
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
 // const colorIsSelected = [true,false,false,false,false ];
 
-const SignInModal = ({user, handleShow, show, onHide}) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
-
+const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRemainBudget, handleShow, show, onHide}) => {
     const [isPlus,setIsPlus] = useState(true);
+
+    const [title, setTitle] = useState('');
+    const [amount, setAmount] = useState();
+    const [date, setDate] = useState('');
     const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
-    const [categoryCnt, setCategoryCnt] = useState([0,0,0,0,0]);
+    const [isBudget, setIsBudget] = useState(false);
+
+    const plusCategory = ["월급", "용돈", "금융", "사업", "기타"];
+    const minusCategory = ["음식", "문화", "교육", "의료/건강", "기타"];
+    // const [categoryCnt, setCategoryCnt] = useState([0,0,0,0,0]);
 
     const datePickerStyle = {
         display : "inline-block",
@@ -26,25 +30,31 @@ const SignInModal = ({user, handleShow, show, onHide}) => {
 
     const categorySelected = (e) => {
         setSelCategory(e.target.value);
+        // setSelColor(colorClasses[e.target.key]);
+        // console.log(e.target.color);
     }
 
-    const eventCollctionRef = collection(db, "finance");
+    const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
-    await addDoc(eventCollctionRef, 
-        {user : user,
-        title : title,
-        description : description,
-        date : date,
-        isPlus : isPlus,
-        color : selColor,
-        category : selCategory});
-    setTitle("");
-    setDescription("");
-    setIsPlus(true);
-    setSelCategory("");
-    setDate("");
-    setSelCategory("");
- };
+        {(isPlus && isBudget) && setRemainBudget(remainBudget + parseInt(amount))};
+        {(!isPlus && isBudget) && setRemainBudget(remainBudget - parseInt(amount))};
+        await addDoc(financeCollctionRef, 
+            {user : user,
+            title : title,
+            amount : amount,
+            date : date,
+            isPlus : isPlus,
+            // color : selColor,
+            category : selCategory,
+            isBudet : isBudget});
+        setTitle("");
+        setAmount();
+        setIsPlus(true);
+        setSelCategory("");
+        setDate("");
+        setSelColor(""); 
+        setIsBudget(false);
+    };
 
   
   return (
@@ -77,56 +87,24 @@ const SignInModal = ({user, handleShow, show, onHide}) => {
                 {isPlus && 
                 <Form>
                     <Form.Group>
-                        <Form.Label>수입 금액</Form.Label>
+                        <Form.Label>수입 내용</Form.Label>
                         <Form.Control 
                             type="text"
                             name="title"
-                            placeholder="금액을 입력하세요."
+                            placeholder="내용을 입력하세요."
+                            value={title}
+                            onChange={(e) => {setTitle(e.target.value)}}
                             />
                     </Form.Group>
 
-                    <Form.Group style={datePickerStyle}>
-                        <Form.Label>날짜 등록</Form.Label>
-                            <DatePicker 
-                            className = "form-control"
-                            selected={date}
-                            dateFormat="yyyy-MM-dd"
-                            onChange= {date => setDate(date)} />
-                    </Form.Group >
-
-
                     <Form.Group>
-                        <Form.Label>카테고리</Form.Label>
-                        <Form.Select onChange={categorySelected}>
-                            <option>지출 카테고리를 선택하세요</option>
-                            <option value="food" >음식</option>
-                            <option value="culture">문화</option>
-                            <option value="traffic">교통비</option>
-                            <option value="doc">의료/건강</option>
-                            <option value="etc">기타</option>
-                        </Form.Select>
-                        
-                    </Form.Group>
-
-                    <Button block variant="info" 
-                            type="submit" 
-                            className="my-3"
-                            onClick={() => {
-                                {saveFinance()};
-                                {handleShow()};
-                            }}> 수입 등록
-                    </Button> 
-                </Form>
-                }
-
-                {!isPlus && 
-                <Form>
-                    <Form.Group>
-                        <Form.Label>지출 금액</Form.Label>
+                        <Form.Label>수입 금액</Form.Label>
                         <Form.Control 
-                            type="text"
-                            name="title"
+                            type="Number"
+                            name="amount"
                             placeholder="금액을 입력하세요."
+                            value={amount}
+                            onChange={(e) => {setAmount(e.target.value)}}
                             />
                     </Form.Group>
 
@@ -149,7 +127,85 @@ const SignInModal = ({user, handleShow, show, onHide}) => {
                             <option value="business">사업 수익</option>
                             <option value="etc">기타</option>
                         </Form.Select>
-                        
+                    </Form.Group>
+
+                    <Form.Group  className="mt-3">
+                        <fieldset class="form-group" onChange={(e) => setIsBudget(!isBudget)}>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="plusBudget"></input>
+                                <label class="form-check-label" for="plusBudget">
+                                예산에 포함
+                                </label>
+                            </div>
+                        </fieldset>
+                    </Form.Group>
+                    
+                    <Button block variant="info" 
+                            type="submit" 
+                            className="my-3"
+                            onClick={() => {
+                                {saveFinance()};
+                                {handleShow()};
+                            }}> 수입 등록
+                    </Button> 
+
+                </Form>
+                }
+
+                {!isPlus && 
+                <Form>
+                    <Form.Group>
+                        <Form.Label>지출 내용</Form.Label>
+                        <Form.Control 
+                            type="text"
+                            name="title"
+                            placeholder="내용을 입력하세요."
+                            value={title}
+                            onChange={(e) => {setTitle(e.target.value)}}
+                            />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>지출 금액</Form.Label>
+                        <Form.Control 
+                            type="text"
+                            name="amount"
+                            placeholder="금액을 입력하세요."
+                            value={amount}
+                            onChange={(e) => {setAmount(e.target.value)}}
+                            />
+                    </Form.Group>
+
+                    <Form.Group style={datePickerStyle}>
+                        <Form.Label>날짜 등록</Form.Label>
+                            <DatePicker 
+                            className = "form-control"
+                            selected={date}
+                            dateFormat="yyyy-MM-dd"
+                            onChange= {date => setDate(date)} />
+                    </Form.Group >
+
+                    <Form.Group>
+                        <Form.Label>카테고리</Form.Label>
+                        <Form.Select onChange={categorySelected}>
+                            <option>지출 카테고리를 선택하세요</option>
+                            <option value="food" >음식</option>
+                            <option value="culture">문화</option>
+                            <option value="traffic">교통비</option>
+                            <option value="doc">의료/건강</option>
+                            <option value="etc">기타</option>
+                        </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group  className="mt-3">
+                        <fieldset class="form-group" onChange={(e) => setIsBudget(!isBudget)}>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="minusBudget"></input>
+                                <label class="form-check-label" for="minusBudget">
+                                예산에서 제외
+                                </label>
+                            </div>
+                        </fieldset>
                     </Form.Group>
 
                     <Button block variant="info" 
