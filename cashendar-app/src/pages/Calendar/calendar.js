@@ -148,8 +148,11 @@ function Calendar({
                             right: "custom1",
                         }}
                         dateClick={function (info) {
-                            if (selectedDate) {
+                            // 누르면 선택 날을 바꾼다
+                            // 같은날 클릭시 && selectedDate = true일 경우 선택 해제
+                            if (ScheduleDate == info.dateStr && selectedDate) {
                                 selSelectedDate(false);
+                                this.unselect();
                             } else {
                                 selSelectedDate(true);
                                 setScheduleDate(info.dateStr);
