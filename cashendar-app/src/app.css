@@ -4,4 +4,15 @@ body {
 }
 #root {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.logout {
+    margin-bottom: 3rem;
+    width: 10rem;
+    float: right;
+}
+.logo-main {
+    width: 10rem;
+    height: auto;
 }

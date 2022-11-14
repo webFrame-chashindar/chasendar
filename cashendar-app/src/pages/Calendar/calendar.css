@@ -79,10 +79,9 @@ li {
 
     grid-template-columns: 3fr 1fr;
 }
-.Detail {
+#Detail {
     position: relative;
     width: 100%;
-    display: flex;
 }
 .dateSelected {
     position: relative;

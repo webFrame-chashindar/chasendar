@@ -7,6 +7,7 @@ import Calendar from "./pages/Calendar/calendar";
 import Stats from "./pages/Stats/stats";
 import DateSelected from "./pages/DateSelected/dateselected";
 import EventModal from "./pages/Create/eventModal";
+import Logo from "./layouts/Logo";
 
 import "./app.css";
 
@@ -20,6 +21,7 @@ function App() {
     } else {
         return (
             <>
+                <Logo className="logo-main" />
                 <Logout className="logout" />
                 <Calendar
                     user={currentUser}

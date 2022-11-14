@@ -1,13 +1,9 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-function Logout() {
+function Logout({ className }) {
     const auth = getAuth();
 
     const onLogOutClick = () => {
@@ -16,7 +12,12 @@ function Logout() {
 
     return (
         <>
-            <Button type="button" class="btn btn-outline-danger">
+            <Button
+                className={className}
+                type="button"
+                class="btn btn-outline-danger"
+                onClick={onLogOutClick}
+            >
                 Logout
             </Button>
         </>

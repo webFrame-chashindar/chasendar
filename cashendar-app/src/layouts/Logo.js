@@ -1,9 +1,9 @@
 import React from "react";
 
-const Logo = () => {
+const Logo = ({ className }) => {
     return (
         <>
-            <img src="img/logo.png" className="logoImg" />
+            <img src="img/logo.png" className={className} />
         </>
     );
 };
