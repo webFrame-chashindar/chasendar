@@ -29,20 +29,20 @@ var Events = [];
 // ]
 
 // 더미 (수입과 지출)이벤트 목록
-var dummyInOutEvents = [
-    { title: "+ 30000", date: "2022-11-07" },
-    { title: "- 20000", date: "2022-11-07" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-08" },
-    { title: "+ 20000", date: "2022-11-09" },
-];
+// var dummyInOutEvents = [
+//     { title: "+ 30000", date: "2022-11-07" },
+//     { title: "- 20000", date: "2022-11-07" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-08" },
+//     { title: "+ 20000", date: "2022-11-09" },
+// ];
 
 function Calendar({
     user,
@@ -59,19 +59,22 @@ function Calendar({
     );
     const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
     const [eventList, setEventList] = useState([]);
+    const [financeEList, setFinanceEList] = useState([]);
     const [selectedDate, selSelectedDate] = useState(false);
 
     var planList = [];
+    var financeList = [];
     // const eventList = [];
 
     // 선택한 모드에 따라 출력할 캘린더 변경
     if (SelectCalendar === 1) {
         Events = eventList;
     } else {
-        Events = dummyInOutEvents;
+        Events = financeEList;
     }
 
     const planCollection = collection(db, "plan");
+    const financeCollection = collection(db, "finance");
     useEffect(() => {
         const getPlan = async () => {
             const data = await getDocs(planCollection);
@@ -93,13 +96,39 @@ function Calendar({
                 user: value.user,
                 backgroundColor: value.color,
                 borderColor: value.color,
+                description: value.description,
             }));
             console.log(planList);
             setEventList(planList.filter((value) => value.user === user));
             // eventList = planList.filter(plan => plan.user === user);
             console.log(eventList);
         };
+        const getFinance = async () => {
+            const data = await getDocs(financeCollection);
+            const dataList = data.docs.map((doc)=>({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            financeList = dataList.map((value)=>({
+                titleF: value.title,
+                title: value.amount,
+                category: value.category,
+                date: new Date(((value.date).toDate()).getTime() - ((value.date).toDate().getTimezoneOffset()*60000))
+                    .toISOString()
+                    .slice(0, 10),
+                isBudet: value.isBudet,
+                isPlus: value.isPlus,
+                // 수입, 지출 색 설정
+                backgroundColor: value.isPlus?"blue":"red",
+                borderColor:value.isPlus?"blue":"red",
+                user: value.user,
+            }));
+            console.log(planList);
+            setFinanceEList(financeList.filter((value) => value.user === user));
+            console.log(financeEList);
+        };
         getPlan();
+        getFinance();
     }, []);
 
     return (
@@ -185,7 +214,7 @@ function Calendar({
                         <div id="TodayInOut">
                             <h3 id="dayInOut">수입과 지출</h3>
                             <ul>
-                                {dummyInOutEvents
+                                {financeEList
                                     .filter(
                                         (item) => item.date === ScheduleDate
                                     )
