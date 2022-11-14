@@ -13,6 +13,7 @@ export default function CreateEventButton({
     setDefaultBudget,
     remainBudget,
     setRemainBudget,
+    buttonClick = f => f
 }) {
     const [showEventModal, setShowEventModal] = useState(false);
     const [showSignInModalOn, setShowSignInModalOn] = useState(false);
@@ -68,6 +69,8 @@ export default function CreateEventButton({
                     handleShow={handleShowEventModal}
                     show={showEventModal}
                     onHide={() => setShowEventModal(false)}
+                    // 변경
+                    buttonClick={buttonClick}
                 />
             )}
             {showSignInModalOn && (
@@ -80,6 +83,8 @@ export default function CreateEventButton({
                     handleShow={handleShowSignInModal}
                     show={showSignInModalOn}
                     onHide={() => setShowSignInModalOn(false)}
+                    // 변경
+                    buttonClick={buttonClick}
                 />
             )}
         </>

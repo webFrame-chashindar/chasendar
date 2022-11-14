@@ -11,7 +11,9 @@ import { collection } from "firebase/firestore";
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
 const labelsColorIsSelected = [true,false,false,false,false ];
 
-const EventModal = ({user, handleShow, show, onHide}) => {
+const EventModal = ({user, handleShow, show, onHide,
+    //변경
+    buttonClick = f => f}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(); 
@@ -134,6 +136,8 @@ const saveEvent = async () => {
                             onClick={() => {
                                 {saveEvent()};
                                 {handleShow()};
+                                // 변경
+                                {buttonClick(true)}
                             }}> 일정 등록
                     </Button> 
                 </Form>

@@ -9,7 +9,7 @@ import { collection } from "firebase/firestore";
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
 // const colorIsSelected = [true,false,false,false,false ];
 
-const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRemainBudget, handleShow, show, onHide}) => {
+const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRemainBudget, handleShow, show, onHide, buttonClick = f => f}) => {
     const [isPlus,setIsPlus] = useState(true);
 
     const [title, setTitle] = useState('');
@@ -146,6 +146,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             onClick={() => {
                                 {saveFinance()};
                                 {handleShow()};
+                                //변경
+                                {buttonClick(true)};
                             }}> 수입 등록
                     </Button> 
 
@@ -214,6 +216,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             onClick={() => {
                                 {saveFinance()};
                                 {handleShow()};
+                                //변경
+                                {buttonClick(true)};
                             }}> 지출 등록
                     </Button> 
                 </Form>

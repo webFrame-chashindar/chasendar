@@ -15,35 +15,6 @@ var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
 // 빈 이벤트 목록 배열
 var Events = [];
 
-// 더미 (일정)이벤트 목록
-// var dummyScheduleEvents = [
-//   { title: '머리 자르기', date: '2022-11-07' },
-//   { title: '중간고사 공부하기', date: '2022-11-07' },
-//   { title: 'event 1', date: '2022-11-22' },
-//   { title: 'event 2', date: '2022-11-22' },
-//   { title: 'event 3', date: '2022-11-22' },
-//   { title: 'event 4', date: '2022-11-09' },
-//   { title: 'event 5', date: '2022-11-09' },
-//   { title: 'event 6', date: '2022-11-09' },
-//   { title: 'event 7', date: '2022-11-09' }
-// ]
-
-// 더미 (수입과 지출)이벤트 목록
-// var dummyInOutEvents = [
-//     { title: "+ 30000", date: "2022-11-07" },
-//     { title: "- 20000", date: "2022-11-07" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-08" },
-//     { title: "+ 20000", date: "2022-11-09" },
-// ];
-
 function Calendar({
     user,
     defaultBudget,
@@ -58,13 +29,14 @@ function Calendar({
             .slice(0, 10)
     );
     const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
-    const [eventList, setEventList] = useState([]);
-    const [financeEList, setFinanceEList] = useState([]);
+    const [eventList, setEventList] = useState([]); // 일정 목록 저장 상태
+    const [financeEList, setFinanceEList] = useState([]); // 수입 지출 목록 저장 상태
     const [selectedDate, selSelectedDate] = useState(false);
+    // 변경
+    const [buttonClick, setButtonClick] =useState(false);
 
     var planList = [];
     var financeList = [];
-    // const eventList = [];
 
     // 선택한 모드에 따라 출력할 캘린더 변경
     if (SelectCalendar === 1) {
@@ -75,58 +47,67 @@ function Calendar({
 
     const planCollection = collection(db, "plan");
     const financeCollection = collection(db, "finance");
+
+    //변경 코드
+    const getPlan = async () => {
+        const data = await getDocs(planCollection);
+        //console.log(data);
+        const dataList = data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        planList = dataList.map((value) => ({
+            title: value.title,
+            start: value.startDate.toDate().toISOString(),
+            end: value.endDate.toDate().toISOString(),
+            startD: value.startDate
+                .toDate()
+                .setHours(value.startDate.toDate().getHours() + 9),
+            endD: value.endDate
+                .toDate()
+                .setHours(value.endDate.toDate().getHours() + 9),
+            user: value.user,
+            backgroundColor: value.color,
+            borderColor: value.color,
+            description: value.description,
+        }));
+        console.log(planList);
+        setEventList(planList.filter((value) => value.user === user));
+        // eventList = planList.filter(plan => plan.user === user);
+        console.log(eventList);
+    };
+
+    const getFinance = async () => {
+        const data = await getDocs(financeCollection);
+        const dataList = data.docs.map((doc)=>({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        financeList = dataList.map((value)=>({
+            titleF: value.title,
+            title: value.amount,
+            category: value.category,
+            date: new Date(((value.date).toDate()).getTime() - ((value.date).toDate().getTimezoneOffset()*60000))
+                .toISOString()
+                .slice(0, 10),
+            isBudet: value.isBudet,
+            isPlus: value.isPlus,
+            // 수입, 지출 색 설정
+            backgroundColor: value.isPlus?"blue":"red",
+            borderColor:value.isPlus?"blue":"red",
+            user: value.user,
+        }));
+        console.log(planList);
+        setFinanceEList(financeList.filter((value) => value.user === user));
+        console.log(financeEList);
+    };
+    //변경
+    if(buttonClick == true){
+        getPlan();
+        getFinance();
+        setButtonClick(false);
+    }
     useEffect(() => {
-        const getPlan = async () => {
-            const data = await getDocs(planCollection);
-            //console.log(data);
-            const dataList = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            planList = dataList.map((value) => ({
-                title: value.title,
-                start: value.startDate.toDate().toISOString(),
-                end: value.endDate.toDate().toISOString(),
-                startD: value.startDate
-                    .toDate()
-                    .setHours(value.startDate.toDate().getHours() + 9),
-                endD: value.endDate
-                    .toDate()
-                    .setHours(value.endDate.toDate().getHours() + 9),
-                user: value.user,
-                backgroundColor: value.color,
-                borderColor: value.color,
-                description: value.description,
-            }));
-            console.log(planList);
-            setEventList(planList.filter((value) => value.user === user));
-            // eventList = planList.filter(plan => plan.user === user);
-            console.log(eventList);
-        };
-        const getFinance = async () => {
-            const data = await getDocs(financeCollection);
-            const dataList = data.docs.map((doc)=>({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            financeList = dataList.map((value)=>({
-                titleF: value.title,
-                title: value.amount,
-                category: value.category,
-                date: new Date(((value.date).toDate()).getTime() - ((value.date).toDate().getTimezoneOffset()*60000))
-                    .toISOString()
-                    .slice(0, 10),
-                isBudet: value.isBudet,
-                isPlus: value.isPlus,
-                // 수입, 지출 색 설정
-                backgroundColor: value.isPlus?"blue":"red",
-                borderColor:value.isPlus?"blue":"red",
-                user: value.user,
-            }));
-            console.log(planList);
-            setFinanceEList(financeList.filter((value) => value.user === user));
-            console.log(financeEList);
-        };
         getPlan();
         getFinance();
     }, []);
@@ -141,6 +122,8 @@ function Calendar({
                     setDefaultBudget={setDefaultBudget}
                     remainBudget={remainBudget}
                     setRemainBudget={setRemainBudget}
+                    //변경
+                    buttonClick={(check)=> setButtonClick(check)}
                 />
                 <div id="FullCalendar">
                     <FullCalendar
