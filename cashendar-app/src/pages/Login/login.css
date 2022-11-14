@@ -1,4 +1,5 @@
 body {
+    position: relative;
     background: #f9fafc;
     width: 100vh;
     display: flex;
@@ -6,15 +7,15 @@ body {
     justify-items: center;
 }
 .logoImg {
-    width: 27rem;
+    width: 28rem;
     height: auto;
     margin: auto;
-    transform: translate(10%);
 }
 .form-title {
     margin: auto;
     text-align: center;
-    margin-bottom: 3rem;
+    height: auto;
+    margin-bottom: 4rem;
     font-family: "Noto Sans KR";
     font-style: normal;
     font-weight: 700;
@@ -55,7 +56,7 @@ body {
 
 .button-style {
     margin: auto;
-    margin-top: 7rem;
+    margin-top: 3rem;
     background-color: #2b87f2;
     height: 4rem;
     width: 20rem;

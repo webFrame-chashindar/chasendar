@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
-
 import Logo from "../../layouts/Logo";
 import "./login.css";
 
@@ -50,7 +49,7 @@ function LoginComponent(props) {
     return (
         <div className="login-box">
             <Container id="panel">
-                <Logo />
+                <Logo className="logoImg" />
                 <div className="form-title">로그인</div>
                 <Form className="form" onSubmit={onSubmit}>
                     <Form.Group

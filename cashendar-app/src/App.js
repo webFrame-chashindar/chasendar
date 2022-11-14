@@ -6,10 +6,9 @@ import Logout from "./pages/Login/Logout";
 import Calendar from "./pages/Calendar/calendar";
 import Stats from "./pages/Stats/stats";
 import DateSelected from "./pages/DateSelected/dateselected";
-import CreateEventButton from "./pages/Create/createEventButton";
 import EventModal from "./pages/Create/eventModal";
 
-
+import "./app.css";
 
 function App() {
     const [currentUser, setUser] = useState();
@@ -21,11 +20,14 @@ function App() {
     } else {
         return (
             <>
-                <h3>{currentUser}</h3>
-                <Logout />
-                <Calendar user={currentUser} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget= {remainBudget} />
-                <Stats />
-                <CreateEventButton user={currentUser} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} remainBudget= {remainBudget} setRemainBudget = {setRemainBudget} />
+                <Logout className="logout" />
+                <Calendar
+                    user={currentUser}
+                    defaultBudget={defaultBudget}
+                    setDefaultBudget={setDefaultBudget}
+                    remainBudget={remainBudget}
+                    setRemainBudget={setRemainBudget}
+                />
             </>
         );
     }

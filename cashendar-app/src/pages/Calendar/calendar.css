@@ -10,7 +10,7 @@
     background-color: rgb(221, 248, 248);
 }
 
-#TodayDate{
+#TodayDate {
     background-color: rgb(2, 230, 230);
     height: 4%;
     text-align: center;
@@ -50,17 +50,17 @@ li {
 
 .fc-prev-button,
 .fc-next-button {
-    background-color: #AFEEEE !important;
+    background-color: #afeeee !important;
     /* background-color: #90EE90 !important; */
     background-image: none !important;
 }
 
 .fc-day-today {
-    background: #E0F8F1 !important;
+    background: #e0f8f1 !important;
 }
 
 .fc-custom1-button {
-    background: #90EE90 !important;
+    background: #90ee90 !important;
 }
 
 .fc-highlight {
@@ -68,5 +68,23 @@ li {
 }
 
 .fc td {
-    height: 130px !important
+    height: 130px !important;
+}
+
+.calendar-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: grid;
+
+    grid-template-columns: 3fr 1fr;
+}
+.Detail {
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+.dateSelected {
+    position: relative;
+    width: 100%;
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 import {
     getAuth,
@@ -15,7 +16,9 @@ function Logout() {
 
     return (
         <>
-            <button onClick={onLogOutClick}>Log Out</button>
+            <Button type="button" class="btn btn-outline-danger">
+                Logout
+            </Button>
         </>
     );
 }
