@@ -67,8 +67,19 @@ function Calendar({
                 .toDate()
                 .setHours(value.endDate.toDate().getHours() + 9),
             user: value.user,
-            backgroundColor: value.color,
-            borderColor: value.color,
+            // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
+            backgroundColor: 
+            (value.color=="info")?"#54B4D3":(value.color=="secondary")
+            ?"#9FA6B2":(value.color=="danger")
+            ?"#DC4C64":(value.color=="warning")
+            ?"#E4A11B":(value.color=="primary")
+            ?"#3B71CA":value.color,
+            borderColor: 
+            (value.color=="info")?"#54B4D3":(value.color=="secondary")
+            ?"#9FA6B2":(value.color=="danger")
+            ?"#DC4C64":(value.color=="warning")
+            ?"#E4A11B":(value.color=="primary")
+            ?"#3B71CA":value.color,
             description: value.description,
         }));
         console.log(planList);
@@ -93,8 +104,8 @@ function Calendar({
             isBudet: value.isBudet,
             isPlus: value.isPlus,
             // 수입, 지출 색 설정
-            backgroundColor: value.isPlus?"blue":"red",
-            borderColor:value.isPlus?"blue":"red",
+            backgroundColor: value.isPlus?"#0d6efd":"#F05650",
+            borderColor:value.isPlus?"#0d6efd":"#F05650",
             user: value.user,
         }));
         console.log(planList);
