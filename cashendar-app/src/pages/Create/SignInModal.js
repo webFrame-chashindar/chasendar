@@ -36,8 +36,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
 
     const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
-        {(isPlus && isBudget) && setRemainBudget(remainBudget + parseInt(amount))};
-        {(!isPlus && isBudget) && setRemainBudget(remainBudget - parseInt(amount))};
+        // {(isPlus && isBudget) && setRemainBudget(remainBudget + parseInt(amount))};
+        // {(!isPlus && isBudget) && setRemainBudget(remainBudget - parseInt(amount))};
         await addDoc(financeCollctionRef, 
             {user : user,
             title : title,
@@ -146,8 +146,6 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             onClick={() => {
                                 {saveFinance()};
                                 {handleShow()};
-                                //변경
-                                {buttonClick(true)};
                             }}> 수입 등록
                     </Button> 
 

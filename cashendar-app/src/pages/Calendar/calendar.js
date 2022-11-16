@@ -227,6 +227,7 @@ function Calendar({
                         className="dateSelected"
                         user={user}
                         eventList={eventList}
+                        financeEList = {financeEList}
                         defaultBudget={defaultBudget}
                         setDefaultBudget={setDefaultBudget}
                         remainBudget={remainBudget}

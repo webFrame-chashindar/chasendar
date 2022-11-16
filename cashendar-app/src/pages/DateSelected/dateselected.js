@@ -1,25 +1,37 @@
 import React from "react";
 import DateSelected from "./dateselected";
 import { Stack } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import BudgetModal from "./setBudgetModal"
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction' // 달력에서 day클릭을 위해
 import ReactApexChart from 'react-apexcharts';
 
-function Date({user, eventList, defaultBudget, setDefaultBudget, remainBudget, curMonth}) {
-    const category = ["음식", "문화", "교육", "의료/건강", "기타"];
+function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, remainBudget, curMonth}) {
+    const category = ["food", "culture", "traffic", "doc", "etc"];
+    const categoryCnt = [0,0,0,0,0];
 
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const handleBudgetModal = () => {
         setShowBudgetModal(false);
     }
+    
+    // const financeList = [];
 
+    useMemo(() => {
+      for(var i in category){
+        categoryCnt[i] = financeEList.filter( f => f.category === category[i]).length
+        
+      }
+  }, [financeEList]);
+
+  console.log(`카테카테 : ${categoryCnt[1]}`)
+  
     const chartOpt = {
         series: [{
           name: 'count',
-          data: [1,1,1,1,1]
+          data: [categoryCnt[0],categoryCnt[1],categoryCnt[2],categoryCnt[3],categoryCnt[4]]
         }],
         options: {
           chart: {
