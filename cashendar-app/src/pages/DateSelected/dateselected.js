@@ -22,11 +22,10 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
     useMemo(() => {
       for(var i in category){
         categoryCnt[i] = financeEList.filter( f => f.category === category[i]).length
-        
       }
   }, [financeEList]);
 
-  console.log(`카테카테 : ${categoryCnt[1]}`)
+  console.log(` : ${categoryCnt[1]}`)
   
     const chartOpt = {
         series: [{
@@ -111,7 +110,11 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
       };
     
 
-    var budgetPercentage = parseInt((remainBudget / defaultBudget) *100);
+    //var budgetPercentage = parseInt((remainBudget / defaultBudget) *100);
+    const budgetPercentage = parseInt((remainBudget / defaultBudget) * 100);
+
+
+
     console.log(defaultBudget);
     console.log(remainBudget);
 
@@ -123,7 +126,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
                 예산설정</button>
             <div class="list-group mb-2">
                 <span class="list-group-item list-group-item-action active"><h5>이달의 예산</h5></span>
-                <span class="list-group-item list-group-item-action">
+                <span class="list-group-item list-group-item-action"> 예산 중 남은 잔액
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{width: `${budgetPercentage}%`}}></div>
                     </div>
@@ -133,6 +136,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
                     
                 {/* 아래에서 잔여 예산 계산 안됨.. */}
                 <span class="list-group-item list-group-item-action disabled">잔여 예산 : {remainBudget}</span> 
+
             </div>
 
             <div class="list-group mb-2">

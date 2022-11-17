@@ -36,6 +36,7 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
 
     const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
+        
         // {(isPlus && isBudget) && setRemainBudget(remainBudget + parseInt(amount))};
         // {(!isPlus && isBudget) && setRemainBudget(remainBudget - parseInt(amount))};
         await addDoc(financeCollctionRef, 
