@@ -21,8 +21,11 @@ function App() {
     } else {
         return (
             <>
-                <Logo className="logo-main" />
-                <Logout className="logout" />
+                <div className="main_header">
+                    <Logo className="logo-main" />
+                    <Logout id="logout" />
+                </div>
+                <hr />
                 <Calendar
                     user={currentUser}
                     defaultBudget={defaultBudget}

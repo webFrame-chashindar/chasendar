@@ -13,7 +13,7 @@ export default function CreateEventButton({
     setDefaultBudget,
     remainBudget,
     setRemainBudget,
-    buttonClick = f => f
+    buttonClick = (f) => f,
 }) {
     const [showEventModal, setShowEventModal] = useState(false);
     const [showSignInModalOn, setShowSignInModalOn] = useState(false);
@@ -37,9 +37,13 @@ export default function CreateEventButton({
 
     return (
         <>
-            <Navbar bg="light" expand="lg" className="create-button">
+            <Navbar
+                bg="light"
+                expand="lg"
+                className="create-button"
+                id="createButtons"
+            >
                 <Container>
-                    <Navbar.Brand>Cashendar</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">

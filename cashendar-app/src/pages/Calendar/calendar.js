@@ -8,6 +8,7 @@ import "./calendar.css";
 import DateSelected from "../DateSelected/dateselected";
 
 import CreateEventButton from "../Create/createEventButton";
+import DateDetail from "../DateSelected/dateDetail";
 
 // 한국 시간으로 맞추기 전 Date 객체
 var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
@@ -33,7 +34,7 @@ function Calendar({
     const [financeEList, setFinanceEList] = useState([]); // 수입 지출 목록 저장 상태
     const [selectedDate, selSelectedDate] = useState(false);
     // 변경
-    const [buttonClick, setButtonClick] =useState(false);
+    const [buttonClick, setButtonClick] = useState(false);
 
     var planList = [];
     var financeList = [];
@@ -68,18 +69,30 @@ function Calendar({
                 .setHours(value.endDate.toDate().getHours() + 9),
             user: value.user,
             // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
-            backgroundColor: 
-            (value.color=="info")?"#54B4D3":(value.color=="secondary")
-            ?"#9FA6B2":(value.color=="danger")
-            ?"#DC4C64":(value.color=="warning")
-            ?"#E4A11B":(value.color=="primary")
-            ?"#3B71CA":value.color,
-            borderColor: 
-            (value.color=="info")?"#54B4D3":(value.color=="secondary")
-            ?"#9FA6B2":(value.color=="danger")
-            ?"#DC4C64":(value.color=="warning")
-            ?"#E4A11B":(value.color=="primary")
-            ?"#3B71CA":value.color,
+            backgroundColor:
+                value.color == "info"
+                    ? "#54B4D3"
+                    : value.color == "secondary"
+                    ? "#9FA6B2"
+                    : value.color == "danger"
+                    ? "#DC4C64"
+                    : value.color == "warning"
+                    ? "#E4A11B"
+                    : value.color == "primary"
+                    ? "#3B71CA"
+                    : value.color,
+            borderColor:
+                value.color == "info"
+                    ? "#54B4D3"
+                    : value.color == "secondary"
+                    ? "#9FA6B2"
+                    : value.color == "danger"
+                    ? "#DC4C64"
+                    : value.color == "warning"
+                    ? "#E4A11B"
+                    : value.color == "primary"
+                    ? "#3B71CA"
+                    : value.color,
             description: value.description,
         }));
         console.log(planList);
@@ -90,22 +103,25 @@ function Calendar({
 
     const getFinance = async () => {
         const data = await getDocs(financeCollection);
-        const dataList = data.docs.map((doc)=>({
+        const dataList = data.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
         }));
-        financeList = dataList.map((value)=>({
+        financeList = dataList.map((value) => ({
             titleF: value.title,
             title: value.amount,
             category: value.category,
-            date: new Date(((value.date).toDate()).getTime() - ((value.date).toDate().getTimezoneOffset()*60000))
+            date: new Date(
+                value.date.toDate().getTime() -
+                    value.date.toDate().getTimezoneOffset() * 60000
+            )
                 .toISOString()
                 .slice(0, 10),
             isBudet: value.isBudet,
             isPlus: value.isPlus,
             // 수입, 지출 색 설정
-            backgroundColor: value.isPlus?"#0d6efd":"#F05650",
-            borderColor:value.isPlus?"#0d6efd":"#F05650",
+            backgroundColor: value.isPlus ? "#0d6efd" : "#F05650",
+            borderColor: value.isPlus ? "#0d6efd" : "#F05650",
             user: value.user,
         }));
         console.log(planList);
@@ -113,7 +129,7 @@ function Calendar({
         console.log(financeEList);
     };
     //변경
-    if(buttonClick == true){
+    if (buttonClick == true) {
         getPlan();
         getFinance();
         setButtonClick(false);
@@ -134,7 +150,7 @@ function Calendar({
                     remainBudget={remainBudget}
                     setRemainBudget={setRemainBudget}
                     //변경
-                    buttonClick={(check)=> setButtonClick(check)}
+                    buttonClick={(check) => setButtonClick(check)}
                 />
                 <div id="FullCalendar">
                     <FullCalendar
@@ -188,46 +204,18 @@ function Calendar({
             </div>
             <div className="stat">
                 {selectedDate && (
-                    <div id="Detail">
-                        <h3 id="TodayDate">Date: {ScheduleDate}</h3>
-                        <div id="TodaySchedule">
-                            <h3 id="daySchedule">일정</h3>
-                            <ul>
-                                {eventList
-                                    .filter(
-                                        (item) =>
-                                            new Date(item.startD)
-                                                .toISOString()
-                                                .slice(0, 10) <= ScheduleDate &&
-                                            new Date(item.endD)
-                                                .toISOString()
-                                                .slice(0, 10) >= ScheduleDate
-                                    )
-                                    .map((item, i) => {
-                                        return <li key={i}>{item.title}</li>;
-                                    })}
-                            </ul>
-                        </div>
-                        <div id="TodayInOut">
-                            <h3 id="dayInOut">수입과 지출</h3>
-                            <ul>
-                                {financeEList
-                                    .filter(
-                                        (item) => item.date === ScheduleDate
-                                    )
-                                    .map((item, i) => {
-                                        return <li key={i}>{item.title}</li>;
-                                    })}
-                            </ul>
-                        </div>
-                    </div>
+                    <DateDetail
+                        ScheduleDate={ScheduleDate}
+                        eventList={eventList}
+                        financeEList={financeEList}
+                    />
                 )}
                 {!selectedDate && (
                     <DateSelected
                         className="dateSelected"
                         user={user}
                         eventList={eventList}
-                        financeEList = {financeEList}
+                        financeEList={financeEList}
                         defaultBudget={defaultBudget}
                         setDefaultBudget={setDefaultBudget}
                         remainBudget={remainBudget}

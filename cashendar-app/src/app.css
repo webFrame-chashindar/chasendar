@@ -7,12 +7,21 @@ body {
     display: flex;
     flex-direction: column;
 }
-.logout {
-    margin-bottom: 3rem;
+
+.main_header {
+    display: flex;
+    margin: 3rem 3rem 1rem 1rem;
+}
+#logout {
+    margin-left: auto;
     width: 10rem;
-    float: right;
+    height: 1 rem;
+    display: inline-block;
+    vertical-align: middle;
 }
 .logo-main {
-    width: 10rem;
+    width: 20rem;
     height: auto;
+    display: inline-block;
+    vertical-align: middle;
 }
