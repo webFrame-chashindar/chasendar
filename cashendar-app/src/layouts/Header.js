@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 
-import Logo from "./Layout";
+import Logo from "./Logo";
 import Logout from "../pages/Login/Logout";
 import CreateEventButton from "../pages/Create/createEventButton";
 
@@ -10,17 +10,17 @@ const Header = (props) => {
         <div className="main_header">
             <Logo className="logo-main" />
             <CreateEventButton
+                id="create-button"
                 className="create-botton-container"
-                user={props.user}
+                user={props.currentUser}
                 defaultBudget={props.defaultBudget}
                 setDefaultBudget={props.setDefaultBudget}
                 remainBudget={props.remainBudget}
                 setRemainBudget={props.setRemainBudget}
                 //변경
-                buttonClick={(f) => f}
+                buttonClick={props.buttonClick}
             />
-            <Logout id="logout" />
-            <hr />
+            <Logout />
         </div>
     );
 };

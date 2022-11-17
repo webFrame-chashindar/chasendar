@@ -13,10 +13,10 @@ function Logout({ id }) {
     return (
         <>
             <Button
-                id={id}
+                id="logout"
                 type="button"
                 class="btn btn-outline-dark"
-                size="sm"
+                size="xs"
                 onClick={onLogOutClick}
             >
                 Logout

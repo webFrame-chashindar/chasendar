@@ -10,12 +10,12 @@ body {
 
 .main_header {
     display: flex;
-    margin: 3rem 3rem 1rem 1rem;
+    margin: 1.5rem 3rem 1rem 1rem;
+    align-items: center;
 }
 #logout {
-    margin-left: auto;
-    width: 10rem;
-    height: 1 rem;
+    width: 6rem;
+    height: 2.5rem;
     display: inline-block;
     vertical-align: middle;
 }
@@ -24,4 +24,12 @@ body {
     height: auto;
     display: inline-block;
     vertical-align: middle;
+}
+#createButtons {
+    margin-left: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+hr {
+    margin-bottom: 3rem;
 }
