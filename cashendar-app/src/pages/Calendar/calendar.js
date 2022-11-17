@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useImperativeHandle,forwardRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
@@ -8,7 +8,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 import "./calendar.css";
 import DateSelected from "../DateSelected/dateselected";
-import CreateEventButton from "../Create/createEventButton";
+//import CreateEventButton from "../Create/createEventButton";
 import DateDetail from "../DateSelected/dateDetail";
 
 // 한국 시간으로 맞추기 전 Date 객체
@@ -17,13 +17,22 @@ var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
 // 빈 이벤트 목록 배열
 var Events = [];
 
-function Calendar({
+////수정 부분//////////////
+const Calendar = forwardRef(({
     user,
     defaultBudget,
     setDefaultBudget,
     remainBudget,
     setRemainBudget,
-}) {
+},ref) =>{
+    function functionWhichParentNeed(){
+        getPlan();
+        getFinance();
+    }
+    useImperativeHandle(ref,() => ({
+        functionWhichParentNeed,
+    }));
+////////////////////////
     // 날짜 상태 (오늘의 날짜를 초기값) + 한국 기준 시간으로 변경
     const [ScheduleDate, setScheduleDate] = useState(
         new Date(d.getTime() - d.getTimezoneOffset() * 60000)
@@ -71,27 +80,27 @@ function Calendar({
             user: value.user,
             // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
             backgroundColor:
-                value.color == "info"
+                value.color === "info"
                     ? "#54B4D3"
-                    : value.color == "secondary"
+                    : value.color === "secondary"
                     ? "#9FA6B2"
-                    : value.color == "danger"
+                    : value.color === "danger"
                     ? "#DC4C64"
-                    : value.color == "warning"
+                    : value.color === "warning"
                     ? "#E4A11B"
-                    : value.color == "primary"
+                    : value.color === "primary"
                     ? "#3B71CA"
                     : value.color,
             borderColor:
                 value.color === "info"
                     ? "#54B4D3"
-                    : value.color == "secondary"
+                    : value.color === "secondary"
                     ? "#9FA6B2"
-                    : value.color == "danger"
+                    : value.color === "danger"
                     ? "#DC4C64"
-                    : value.color == "warning"
+                    : value.color === "warning"
                     ? "#E4A11B"
-                    : value.color == "primary"
+                    : value.color === "primary"
                     ? "#3B71CA"
                     : value.color,
             description: value.description,
@@ -130,7 +139,7 @@ function Calendar({
         console.log(financeEList);
     };
     //변경
-    if (buttonClick == true) {
+    if (buttonClick === true) {
         getPlan();
         getFinance();
         setButtonClick(false);
@@ -143,7 +152,7 @@ function Calendar({
     return (
         <div className="calendar-container">
             <div className="calendar-body">
-                <CreateEventButton
+                {/* <CreateEventButton
                     className="create-botton-container"
                     user={user}
                     defaultBudget={defaultBudget}
@@ -152,7 +161,7 @@ function Calendar({
                     setRemainBudget={setRemainBudget}
                     //변경
                     buttonClick={(check) => setButtonClick(check)}
-                />
+                /> */}
                 <div id="FullCalendar">
                     <FullCalendar
                         plugins={[dayGridPlugin, interactionPlugin]}
@@ -167,7 +176,7 @@ function Calendar({
                         dateClick={function (info) {
                             // 누르면 선택 날을 바꾼다
                             // 같은날 클릭시 && selectedDate = true일 경우 선택 해제
-                            if (ScheduleDate == info.dateStr && selectedDate) {
+                            if (ScheduleDate === info.dateStr && selectedDate) {
                                 selSelectedDate(false);
                                 this.unselect();
                             } else {
@@ -228,6 +237,6 @@ function Calendar({
             </div>
         </div>
     );
-}
+});
 
 export default Calendar;
