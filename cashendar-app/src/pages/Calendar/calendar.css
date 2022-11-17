@@ -1,6 +1,6 @@
 #FullCalendar {
     float: left;
-    width: 90%;
+    width: 100%;
 }
 
 #Detail {
@@ -86,4 +86,7 @@ li {
 .dateSelected {
     position: relative;
     width: 100%;
+}
+.stat {
+    margin: 1rem 1rem 0 1rem;
 }

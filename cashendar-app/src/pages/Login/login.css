@@ -57,12 +57,10 @@ body {
 .button-style {
     margin: auto;
     margin-top: 3rem;
-    background-color: #2b87f2;
     height: 4rem;
     width: 20rem;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    border: #2b87f2;
 
     font-family: "Noto Sans KR";
     font-style: normal;
@@ -73,12 +71,10 @@ body {
 .button-style > :hover {
     margin: auto;
     margin-top: 7rem;
-    background-color: aqua;
     height: 4rem;
     width: 20rem;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
-    border: #2b87f2;
     font-family: "Noto Sans KR";
     font-style: normal;
     font-weight: 500;

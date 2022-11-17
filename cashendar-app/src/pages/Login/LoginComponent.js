@@ -86,7 +86,10 @@ function LoginComponent(props) {
                     <br />
 
                     <div className="d-grid gap-1">
-                        <Button className="button-style" type="submit">
+                        <Button
+                            className="button-style btn btn-primary"
+                            type="submit"
+                        >
                             로그인
                         </Button>
                     </div>

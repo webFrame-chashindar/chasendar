@@ -4,12 +4,10 @@ import Layout from "./layouts/Layout";
 import LoginComponent from "./pages/Login/LoginComponent";
 import Logout from "./pages/Login/Logout";
 import Calendar from "./pages/Calendar/calendar";
-import Stats from "./pages/Stats/stats";
-import DateSelected from "./pages/DateSelected/dateselected";
-import EventModal from "./pages/Create/eventModal";
 import Logo from "./layouts/Logo";
 
 import "./app.css";
+import Header from "./layouts/Header";
 
 function App() {
     const [currentUser, setUser] = useState();

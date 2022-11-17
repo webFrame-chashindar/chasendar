@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
+
 import { db } from "../../fbase/fbase";
 import { collection, getDocs } from "firebase/firestore";
+
 import "./calendar.css";
 import DateSelected from "../DateSelected/dateselected";
-
 import CreateEventButton from "../Create/createEventButton";
 import DateDetail from "../DateSelected/dateDetail";
 
@@ -82,7 +83,7 @@ function Calendar({
                     ? "#3B71CA"
                     : value.color,
             borderColor:
-                value.color == "info"
+                value.color === "info"
                     ? "#54B4D3"
                     : value.color == "secondary"
                     ? "#9FA6B2"
@@ -205,6 +206,8 @@ function Calendar({
             <div className="stat">
                 {selectedDate && (
                     <DateDetail
+                        clssName="dateDetail"
+                        user={user}
                         ScheduleDate={ScheduleDate}
                         eventList={eventList}
                         financeEList={financeEList}
