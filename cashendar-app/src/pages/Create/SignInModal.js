@@ -146,6 +146,7 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             onClick={() => {
                                 {saveFinance()};
                                 {handleShow()};
+                                {buttonClick(true)};
                             }}> 수입 등록
                     </Button> 
 
