@@ -31,8 +31,8 @@ const Calendar = forwardRef(
             setDefaultBudget,
             remainBudget,
             setRemainBudget,
-            buttonClick,
-            setButtonClick,
+            // buttonClick,
+            // setButtonClick,
         },
         ref
     ) => {
@@ -54,6 +54,7 @@ const Calendar = forwardRef(
         const [eventList, setEventList] = useState([]); // 일정 목록 저장 상태
         const [financeEList, setFinanceEList] = useState([]); // 수입 지출 목록 저장 상태
         const [selectedDate, selSelectedDate] = useState(false);
+        // const [buttonClick, setButtonClick] = useState(false);
         // 변경
 
         var planList = [];
@@ -149,11 +150,11 @@ const Calendar = forwardRef(
             console.log(financeEList);
         };
         //변경
-        if (buttonClick === true) {
-            getPlan();
-            getFinance();
-            setButtonClick(false);
-        }
+        // if (buttonClick === true) {
+        //     getPlan();
+        //     getFinance();
+        //     setButtonClick(false);
+        // }
         useEffect(() => {
             getPlan();
             getFinance();
