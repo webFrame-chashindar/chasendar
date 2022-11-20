@@ -3,45 +3,6 @@
     width: 100%;
 }
 
-#Detail {
-    float: left;
-    width: 20%;
-    height: 100vh;
-    background-color: rgb(221, 248, 248);
-}
-
-#TodayDate {
-    background-color: rgb(2, 230, 230);
-    height: 4%;
-    text-align: center;
-    margin: 5px 25px;
-    color: white;
-}
-
-#TodaySchedule {
-    height: 45%;
-    background-color: #3eacd7;
-    margin: 5px 25px;
-}
-
-#TodayInOut {
-    height: 45%;
-    background-color: #5fb7b7;
-    margin: 5px 25px;
-}
-
-#daySchedule {
-    color: white;
-}
-
-#dayInOut {
-    color: white;
-}
-
-li {
-    color: white;
-}
-
 .fc-today-button {
     background-color: #468cb4 !important;
     /* background-color: #1E90FF !important; */

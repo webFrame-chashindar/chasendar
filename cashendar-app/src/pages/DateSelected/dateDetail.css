@@ -1,0 +1,44 @@
+.stat {
+    background-color: #e6f5f1;
+}
+#Detail {
+    display: flex;
+    flex-direction: column;
+}
+
+#TodayDate {
+    background: #075c52;
+    height: 6%;
+    text-align: center;
+    padding: 0.5rem 3rem;
+    margin: 2rem 2rem 1rem 2rem;
+    color: white;
+    white-space: nowrap;
+}
+
+#TodaySchedule {
+    flex-basis: 10rem;
+    margin: 1rem 1rem;
+}
+
+#TodayInOut {
+    flex-basis: 10rem;
+    margin: 1rem 1rem;
+}
+
+.item_amount {
+    margin-bottom: 0.3rem;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 29px;
+
+    color: #4169e1;
+}
+.item_title {
+    margin-left: 1rem;
+    font-size: 0.8rem;
+}
+#plus {
+    color: #ff77b0;
+}
