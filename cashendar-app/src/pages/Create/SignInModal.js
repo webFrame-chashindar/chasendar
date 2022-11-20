@@ -3,13 +3,13 @@ import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
 import DatePicker from "react-datepicker";
 import { db } from "../../fbase/fbase";
-import { addDoc, Firestore } from "firebase/firestore";
+import { addDoc, getDoc, updateDoc, doc, Firestore } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
 // const colorIsSelected = [true,false,false,false,false ];
 
-const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRemainBudget, handleShow, show, onHide, buttonClick = f => f}) => {
+const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, handleShow, show, onHide, buttonClick = f => f}) => {
     const [isPlus,setIsPlus] = useState(true);
 
     const [title, setTitle] = useState('');
@@ -34,11 +34,37 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
         // console.log(e.target.color);
     }
 
+    const updateBudgetInfo = async () => {
+        const userInfoRef = doc(db, "userInfo",user);
+  
+      const userInfoDoc = await getDoc(userInfoRef);
+    
+      if (userInfoDoc.exists()) {
+         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
+            {user : user,
+            budget : defaultBudget})
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }};
+
+    const updateChangeInfo = async () => {
+        const userInfoRef = doc(db, "userInfo",user);
+  
+      const userInfoDoc = await getDoc(userInfoRef);
+    
+      if (userInfoDoc.exists()) {
+         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
+            {user : user,
+            change : change})
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }};
+
     const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
-        
-        // {(isPlus && isBudget) && setRemainBudget(remainBudget + parseInt(amount))};
-        // {(!isPlus && isBudget) && setRemainBudget(remainBudget - parseInt(amount))};
+    
         await addDoc(financeCollctionRef, 
             {user : user,
             title : title,
@@ -145,6 +171,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             type="submit" 
                             className="my-3"
                             onClick={() => {
+                                {isBudget && setDefaultBudget(parseInt(defaultBudget) + parseInt(amount))}
+                                {updateBudgetInfo()}
                                 {saveFinance()};
                                 {handleShow()};
                                 {buttonClick(true)};
@@ -214,6 +242,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, remainBudget, setRe
                             type="submit" 
                             className="my-3"
                             onClick={() => {
+                                {!isBudget && setChange(parseInt(change) - parseInt(amount))}
+                                {updateChangeInfo()}
                                 {saveFinance()};
                                 {handleShow()};
                                 //변경

@@ -5,7 +5,7 @@ import Logo from "./Logo";
 import Logout from "../pages/Login/Logout";
 import CreateEventButton from "../pages/Create/createEventButton";
 
-const Header = ({user, defaultBudget,setDefaultBudget,remainBudget,setRemainBudget,buttonClick = f => f}) => {
+const Header = ({user, defaultBudget,setDefaultBudget,change,setChange,buttonClick = f => f}) => {
     return (
         <div className="main_header">
             <Logo className="logo-main" />
@@ -15,8 +15,8 @@ const Header = ({user, defaultBudget,setDefaultBudget,remainBudget,setRemainBudg
                 user={user}
                 defaultBudget={defaultBudget}
                 setDefaultBudget={setDefaultBudget}
-                remainBudget={remainBudget}
-                setRemainBudget={setRemainBudget}
+                change={change}
+                setChange={setChange}
                 //변경
                 buttonClick={buttonClick}
             />

@@ -7,8 +7,10 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction' // 달력에서 day클릭을 위해
 import ReactApexChart from 'react-apexcharts';
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../fbase/fbase";
 
-function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, remainBudget, curMonth}) {
+function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, change, setChange, curMonth}) {
     const category = ["food", "culture", "traffic", "doc", "etc"];
     const categoryCnt = [0,0,0,0,0];
 
@@ -16,14 +18,14 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
     const handleBudgetModal = () => {
         setShowBudgetModal(false);
     }
-    
+
     // const financeList = [];
 
     useMemo(() => {
       for(var i in category){
         categoryCnt[i] = financeEList.filter( f => f.category === category[i]).length
       }
-  }, [financeEList]);
+    });
 
   console.log(` : ${categoryCnt[1]}`)
   
@@ -111,12 +113,10 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
     
 
     //var budgetPercentage = parseInt((remainBudget / defaultBudget) *100);
-    const budgetPercentage = parseInt((remainBudget / defaultBudget) * 100);
+    const budgetPercentage = parseInt((parseInt(parseInt(defaultBudget)+parseInt(change)) / parseInt(defaultBudget)) * 100);
 
-
-
-    console.log(defaultBudget);
-    console.log(remainBudget);
+    console.log(`date default :: ${parseInt(parseInt(defaultBudget)+parseInt(change)) / parseInt(defaultBudget)}`);
+    // console.log(`date remain :: ${dd}`);
 
     return <>
     <div id="Detail">
@@ -134,8 +134,8 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
                 </span>
                 {showBudgetModal && <BudgetModal user={user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} handleShow = {handleBudgetModal} show={showBudgetModal} onHide={() => setShowBudgetModal(false)}/>}
                     
-                {/* 아래에서 잔여 예산 계산 안됨.. */}
-                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {remainBudget}</span> 
+                {/* parseInt(change) === NaN ? defaultBudget : parseInt(defaultBudget) + parseInt(change) */}
+                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget) + parseInt(change)}</span> 
 
             </div>
 
@@ -168,9 +168,11 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, re
         </Stack>
     </div>
     </>;
-}
+    }
+
 
 export default Date;
+
 
 
 {/* <div className="bg-light border">

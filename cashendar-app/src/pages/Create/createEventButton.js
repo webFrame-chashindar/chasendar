@@ -11,8 +11,8 @@ export default function CreateEventButton({
     user,
     defaultBudget,
     setDefaultBudget,
-    remainBudget,
-    setRemainBudget,
+    change,
+    setChange,
     buttonClick = (f) => f,
 }) {
     const [showEventModal, setShowEventModal] = useState(false);
@@ -82,8 +82,8 @@ export default function CreateEventButton({
                     user={user}
                     defaultBudget={defaultBudget}
                     setDefaultBudget={setDefaultBudget}
-                    remainBudget={remainBudget}
-                    setRemainBudget={setRemainBudget}
+                    change={change}
+                    setChange={setChange}
                     handleShow={handleShowSignInModal}
                     show={showSignInModalOn}
                     onHide={() => setShowSignInModalOn(false)}

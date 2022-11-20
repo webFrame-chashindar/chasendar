@@ -10,8 +10,8 @@ function App() {
         myRef.current.functionWhichParentNeed();
     }
     const [currentUser, setUser] = useState();
-    const [defaultBudget, setDefaultBudget] = useState(100000);
-    const [remainBudget, setRemainBudget] = useState(defaultBudget);
+    const [defaultBudget, setDefaultBudget] = useState();
+    const [change, setChange] = useState(defaultBudget);
     const [buttonClick, setButtonClick] = useState(false);
     //
     if (buttonClick === true) {
@@ -28,8 +28,8 @@ function App() {
                     user={currentUser}
                     defaultBudget={defaultBudget}
                     setDefaultBudget={setDefaultBudget}
-                    remainBudget={remainBudget}
-                    setRemainBudget={setRemainBudget}
+                    change={change}
+                    setChange={setChange}
                     //변경
                     buttonClick={(check) => setButtonClick(check)}
                 />
@@ -38,8 +38,8 @@ function App() {
                     user={currentUser}
                     defaultBudget={defaultBudget}
                     setDefaultBudget={setDefaultBudget}
-                    remainBudget={remainBudget}
-                    setRemainBudget={setRemainBudget}
+                    change={change}
+                    setChange={setChange}
                     ref={myRef}
                     buttonClick={buttonClick}
                     setButtonClick={setButtonClick}

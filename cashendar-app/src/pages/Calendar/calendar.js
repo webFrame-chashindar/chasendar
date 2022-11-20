@@ -9,7 +9,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs , getDoc, setDoc, doc} from "firebase/firestore";
+import { useMemo } from "react";
 
 import "./calendar.css";
 import DateSelected from "../DateSelected/dateselected";
@@ -29,8 +30,8 @@ const Calendar = forwardRef(
             user,
             defaultBudget,
             setDefaultBudget,
-            remainBudget,
-            setRemainBudget,
+            change,
+            setChange,
             // buttonClick,
             // setButtonClick,
         },
@@ -160,6 +161,22 @@ const Calendar = forwardRef(
             getFinance();
         }, []);
 
+        useMemo(async()=>{
+            const userInfoRef = doc(db, "userInfo",user);
+        
+            const userInfoDoc = await getDoc(userInfoRef);
+        
+            if (userInfoDoc.exists()) {
+              setDefaultBudget(userInfoDoc.data().budget);
+              setChange(userInfoDoc.data().change);
+            } else {
+                userInfoRef = await setDoc(doc(db, "userInfo", user), {
+                    user : user,
+                    budget : 1000000,
+                    change : 0
+                  });
+            }}, [user])
+
         return (
             <div className="calendar-container">
                 <div className="calendar-body">
@@ -168,8 +185,8 @@ const Calendar = forwardRef(
                     user={user}
                     defaultBudget={defaultBudget}
                     setDefaultBudget={setDefaultBudget}
-                    remainBudget={remainBudget}
-                    setRemainBudget={setRemainBudget}
+                    change={change}
+                    setsetChange={setsetChange}
                     //변경
                     buttonClick={(check) => setButtonClick(check)}
                 /> */}
@@ -244,7 +261,8 @@ const Calendar = forwardRef(
                             financeEList={financeEList}
                             defaultBudget={defaultBudget}
                             setDefaultBudget={setDefaultBudget}
-                            remainBudget={remainBudget}
+                            change={change}
+                            setChange = {setChange}
                             curMonth={new Date().getMonth() + 1}
                         />
                     )}

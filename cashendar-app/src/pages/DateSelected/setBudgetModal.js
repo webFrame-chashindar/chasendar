@@ -1,16 +1,23 @@
 import React from 'react'
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import { db } from "../../fbase/fbase";
-import { updateDoc, doc } from 'firebase/firestore';
+import { updateDoc,getDoc, doc } from 'firebase/firestore';
 
 export default function setBudgetModal({user, defaultBudget, setDefaultBudget, handleShow, show, onHide}) {
     const updateUserInfo = async () => {
-        console.log(`update success ${user}`)
-        await updateDoc(doc(db, "userInfo", {user}), {
-           user : {user},
-           budget : defaultBudget
-        });
-      };
+        const userInfoRef = doc(db, "userInfo",user);
+  
+      const userInfoDoc = await getDoc(userInfoRef);
+  
+      if (userInfoDoc.exists()) {
+         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
+            {user : user,
+            budget : defaultBudget})
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }};
+
   return (
     <Modal
         show={show}
@@ -35,12 +42,14 @@ export default function setBudgetModal({user, defaultBudget, setDefaultBudget, h
                             value={defaultBudget}
                             onChange={(e) => {
                                 setDefaultBudget(e.target.value);
-                                updateUserInfo(); }}/>
+                                 }}/>
                     </Form.Group>
 
                     <Button block variant="info" 
                             className="my-3"
-                            onClick={() => {handleShow()}}> 예산 등록
+                            onClick={() => {
+                                {handleShow()};
+                                updateUserInfo();}}> 예산 등록
                     </Button> 
                 </Form>
                 </Modal.Body>
