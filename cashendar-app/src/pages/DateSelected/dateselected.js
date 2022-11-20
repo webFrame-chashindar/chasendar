@@ -122,7 +122,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
 
     return <>
     <div id="Detail">
-        <h4 id="MonthlyInfo">Monthly Info</h4>
+        <h2 className="text-center" id="MonthlyInfo"><b>Monthly Info</b></h2>
         <Stack className="mt-4 m-1" gap={3}>
             <button type="button" class="btn btn-outline-primary" onClick = {() => setShowBudgetModal(true)}>
                 예산설정</button>
