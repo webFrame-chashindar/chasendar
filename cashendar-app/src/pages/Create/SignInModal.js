@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState,useMemo, useEffect} from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
 import DatePicker from "react-datepicker";
@@ -17,7 +17,11 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     const [date, setDate] = useState('');
     const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
-    const [isBudget, setIsBudget] = useState(false);
+    const [isPlusBudget, setIsPlusBudget] = useState(true);
+    const [isMinusBudget, setIsMinusBudget] = useState(true);
+
+    // const [newBudget, setNewBudget] = useState();
+    // const [newChange, setNewChange] = useState();
 
     const plusCategory = ["월급", "용돈", "금융", "사업", "기타"];
     const minusCategory = ["음식", "문화", "교육", "의료/건강", "기타"];
@@ -34,37 +38,25 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
         // console.log(e.target.color);
     }
 
+
     const updateBudgetInfo = async () => {
-        const userInfoRef = doc(db, "userInfo",user);
-  
-      const userInfoDoc = await getDoc(userInfoRef);
-    
-      if (userInfoDoc.exists()) {
-         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
-            {user : user,
-            budget : defaultBudget})
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }};
+        const newBudget = parseInt(defaultBudget) + parseInt(amount)
+        await updateDoc(doc(db, "userInfo", user), 
+        {user : user,
+        budget : newBudget})
+        setDefaultBudget(newBudget)
+    };
 
     const updateChangeInfo = async () => {
-        const userInfoRef = doc(db, "userInfo",user);
-  
-      const userInfoDoc = await getDoc(userInfoRef);
-    
-      if (userInfoDoc.exists()) {
-         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
-            {user : user,
-            change : change})
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }};
+        const newChange = parseInt(change) - parseInt(amount)
+        await updateDoc(doc(db, "userInfo", user), 
+        {user : user,
+        change : newChange})
+        setChange(newChange)
+      };
 
     const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
-    
         await addDoc(financeCollctionRef, 
             {user : user,
             title : title,
@@ -73,14 +65,15 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
             isPlus : isPlus,
             // color : selColor,
             category : selCategory,
-            isBudet : isBudget});
+            isBudet : (isPlus ? isPlusBudget : isMinusBudget)});
         setTitle("");
         setAmount();
         setIsPlus(true);
         setSelCategory("");
         setDate("");
         setSelColor(""); 
-        setIsBudget(false);
+        setIsPlusBudget(false);
+        setIsMinusBudget(true);
     };
 
   
@@ -157,7 +150,10 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                     </Form.Group>
 
                     <Form.Group  className="mt-3">
-                        <fieldset class="form-group" onChange={(e) => setIsBudget(!isBudget)}>
+                        <fieldset class="form-group" onChange={(e) => {
+                            setIsPlusBudget(!isPlusBudget)
+                            // {isPlusBudget && setNewChange(parseInt(change) + parseInt(amount))}
+                        }}>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="plusBudget"></input>
                                 <label class="form-check-label" for="plusBudget">
@@ -168,11 +164,10 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                     </Form.Group>
                     
                     <Button block variant="info" 
-                            type="submit" 
+                            type="button" 
                             className="my-3"
                             onClick={() => {
-                                {isBudget && setDefaultBudget(parseInt(defaultBudget) + parseInt(amount))}
-                                {updateBudgetInfo()}
+                                {isPlusBudget && updateBudgetInfo()}
                                 {saveFinance()};
                                 {handleShow()};
                                 {buttonClick(true)};
@@ -228,7 +223,9 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                     </Form.Group>
 
                     <Form.Group  className="mt-3">
-                        <fieldset class="form-group" onChange={(e) => setIsBudget(!isBudget)}>
+                        <fieldset class="form-group" onChange={(e) => {
+                            setIsMinusBudget(!isMinusBudget)
+                        }}>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="minusBudget"></input>
                                 <label class="form-check-label" for="minusBudget">
@@ -239,11 +236,10 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                     </Form.Group>
 
                     <Button block variant="info" 
-                            type="submit" 
+                            type="button" 
                             className="my-3"
                             onClick={() => {
-                                {!isBudget && setChange(parseInt(change) - parseInt(amount))}
-                                {updateChangeInfo()}
+                                {isMinusBudget && updateChangeInfo()}
                                 {saveFinance()};
                                 {handleShow()};
                                 //변경

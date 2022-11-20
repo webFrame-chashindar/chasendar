@@ -1,22 +1,14 @@
 import React from 'react'
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import { db } from "../../fbase/fbase";
-import { updateDoc,getDoc, doc } from 'firebase/firestore';
+import { updateDoc,getDoc,setDoc, doc } from 'firebase/firestore';
 
 export default function setBudgetModal({user, defaultBudget, setDefaultBudget, handleShow, show, onHide}) {
     const updateUserInfo = async () => {
-        const userInfoRef = doc(db, "userInfo",user);
-  
-      const userInfoDoc = await getDoc(userInfoRef);
-  
-      if (userInfoDoc.exists()) {
-         userInfoRef = await updateDoc(doc(db, "userInfo", user), 
+        await updateDoc(doc(db, "userInfo",user), 
             {user : user,
             budget : defaultBudget})
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }};
+    }
 
   return (
     <Modal

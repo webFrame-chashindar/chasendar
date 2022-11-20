@@ -11,7 +11,7 @@ function App() {
     }
     const [currentUser, setUser] = useState();
     const [defaultBudget, setDefaultBudget] = useState();
-    const [change, setChange] = useState(defaultBudget);
+    const [change, setChange] = useState();
     const [buttonClick, setButtonClick] = useState(false);
     //
     if (buttonClick === true) {
