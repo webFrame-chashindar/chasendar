@@ -19,6 +19,8 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
         setShowBudgetModal(false);
     }
 
+    
+
     // const financeList = [];
 
     useMemo(() => {
