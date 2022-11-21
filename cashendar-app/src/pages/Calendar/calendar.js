@@ -9,12 +9,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import { collection, getDocs , getDoc, setDoc, doc} from "firebase/firestore";
+import { collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
 import { useMemo } from "react";
 
 import "./calendar.css";
 import DateSelected from "../DateSelected/dateselected";
-//import CreateEventButton from "../Create/createEventButton";
 import DateDetail from "../DateSelected/dateDetail";
 
 // 한국 시간으로 맞추기 전 Date 객체
@@ -23,7 +22,6 @@ var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
 // 빈 이벤트 목록 배열
 var Events = [];
 
-////수정 부분//////////////
 const Calendar = forwardRef(
     (
         {
@@ -36,8 +34,6 @@ const Calendar = forwardRef(
             setPlus,
             minus,
             setMinus
-            // buttonClick,
-            // setButtonClick,
         },
         ref
     ) => {
@@ -48,7 +44,6 @@ const Calendar = forwardRef(
         useImperativeHandle(ref, () => ({
             functionWhichParentNeed,
         }));
-        ////////////////////////
         // 날짜 상태 (오늘의 날짜를 초기값) + 한국 기준 시간으로 변경
         const [ScheduleDate, setScheduleDate] = useState(
             new Date(d.getTime() - d.getTimezoneOffset() * 60000)
@@ -58,9 +53,7 @@ const Calendar = forwardRef(
         const [SelectCalendar, setSelectCalendar] = useState(1); // 1 -> 일정 캘린더로 시작
         const [eventList, setEventList] = useState([]); // 일정 목록 저장 상태
         const [financeEList, setFinanceEList] = useState([]); // 수입 지출 목록 저장 상태
-        const [selectedDate, selSelectedDate] = useState(false);
-        // const [buttonClick, setButtonClick] = useState(false);
-        // 변경
+        const [selectedDate, selSelectedDate] = useState(false); // 날 선택 여부
 
         var planList = [];
         var financeList = [];
@@ -72,13 +65,12 @@ const Calendar = forwardRef(
             Events = financeEList;
         }
 
-        const planCollection = collection(db, "plan");
-        const financeCollection = collection(db, "finance");
+        const planCollection = collection(db, "plan"); // 파이어스토어 plan 컬렉션
+        const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
 
-        //변경 코드
+        // 플랜 컬렉션에서 읽어오는 코드
         const getPlan = async () => {
             const data = await getDocs(planCollection);
-            //console.log(data);
             const dataList = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -99,34 +91,33 @@ const Calendar = forwardRef(
                     value.color === "info"
                         ? "#54B4D3"
                         : value.color === "secondary"
-                        ? "#9FA6B2"
-                        : value.color === "danger"
-                        ? "#DC4C64"
-                        : value.color === "warning"
-                        ? "#E4A11B"
-                        : value.color === "primary"
-                        ? "#3B71CA"
-                        : value.color,
+                            ? "#9FA6B2"
+                            : value.color === "danger"
+                                ? "#DC4C64"
+                                : value.color === "warning"
+                                    ? "#E4A11B"
+                                    : value.color === "primary"
+                                        ? "#3B71CA"
+                                        : value.color,
                 borderColor:
                     value.color === "info"
                         ? "#54B4D3"
                         : value.color === "secondary"
-                        ? "#9FA6B2"
-                        : value.color === "danger"
-                        ? "#DC4C64"
-                        : value.color === "warning"
-                        ? "#E4A11B"
-                        : value.color === "primary"
-                        ? "#3B71CA"
-                        : value.color,
+                            ? "#9FA6B2"
+                            : value.color === "danger"
+                                ? "#DC4C64"
+                                : value.color === "warning"
+                                    ? "#E4A11B"
+                                    : value.color === "primary"
+                                        ? "#3B71CA"
+                                        : value.color,
                 description: value.description,
             }));
             console.log(planList);
             setEventList(planList.filter((value) => value.user === user));
-            // eventList = planList.filter(plan => plan.user === user);
             console.log(eventList);
         };
-
+        // finance 컬렉션에서 읽어오는 코드
         const getFinance = async () => {
             const data = await getDocs(financeCollection);
             const dataList = data.docs.map((doc) => ({
@@ -139,7 +130,7 @@ const Calendar = forwardRef(
                 category: value.category,
                 date: new Date(
                     value.date.toDate().getTime() -
-                        value.date.toDate().getTimezoneOffset() * 60000
+                    value.date.toDate().getTimezoneOffset() * 60000
                 )
                     .toISOString()
                     .slice(0, 10),
@@ -154,50 +145,32 @@ const Calendar = forwardRef(
             setFinanceEList(financeList.filter((value) => value.user === user));
             console.log(financeEList);
         };
-        //변경
-        // if (buttonClick === true) {
-        //     getPlan();
-        //     getFinance();
-        //     setButtonClick(false);
-        // }
         useEffect(() => {
             getPlan();
             getFinance();
         }, []);
-
-        useMemo(async()=>{
-            const userInfoRef = doc(db, "userInfo",user);
-        
+        useMemo(async () => {
+            const userInfoRef = doc(db, "userInfo", user);
             const userInfoDoc = await getDoc(userInfoRef);
-        
             if (userInfoDoc.exists()) {
-              setDefaultBudget(userInfoDoc.data().budget);
-              setChange(userInfoDoc.data().change);
-              setPlus(userInfoDoc.data().plus);
-              setMinus(userInfoDoc.data().minus);
+                setDefaultBudget(userInfoDoc.data().budget);
+                setChange(userInfoDoc.data().change);
+                setPlus(userInfoDoc.data().plus);
+                setMinus(userInfoDoc.data().minus);
             } else {
                 userInfoRef = await setDoc(doc(db, "userInfo", user), {
-                    user : user,
-                    budget : 1000000,
-                    change : 0,
-                    plus : 0,
-                    minus : 0
-                  });
-            }}, [user])
+                    user: user,
+                    budget: 1000000,
+                    change: 0,
+                    plus: 0,
+                    minus: 0
+                });
+            }
+        }, [user])
 
         return (
             <div className="calendar-container">
                 <div className="calendar-body">
-                    {/* <CreateEventButton
-                    className="create-botton-container"
-                    user={user}
-                    defaultBudget={defaultBudget}
-                    setDefaultBudget={setDefaultBudget}
-                    change={change}
-                    setsetChange={setsetChange}
-                    //변경
-                    buttonClick={(check) => setButtonClick(check)}
-                /> */}
                     <div id="FullCalendar">
                         <FullCalendar
                             plugins={[dayGridPlugin, interactionPlugin]}
@@ -226,7 +199,6 @@ const Calendar = forwardRef(
                             // 달력에 표시될 캘린더
                             events={
                                 Events
-                                // eventList
                             }
                             selectable="true"
                             dayMaxEvents="true" // 달력에 나올 이벤트 갯수 제한
@@ -239,7 +211,6 @@ const Calendar = forwardRef(
                                 custom1: {
                                     text: "Change View",
                                     click: function () {
-                                        
                                         // 클릭시 달력 출력 모드를 변경한다
                                         if (SelectCalendar === 1) {
                                             setSelectCalendar(2);
@@ -271,9 +242,9 @@ const Calendar = forwardRef(
                             defaultBudget={defaultBudget}
                             setDefaultBudget={setDefaultBudget}
                             change={change}
-                            setChange = {setChange}
-                            plus = {plus}
-                            minus = {minus}
+                            setChange={setChange}
+                            plus={plus}
+                            minus={minus}
                             curMonth={new Date().getMonth() + 1}
                         />
                     )}
