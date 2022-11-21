@@ -112,7 +112,6 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
       };
     
 
-    //var budgetPercentage = parseInt((remainBudget / defaultBudget) *100);
     const budgetPercentage = parseInt((parseInt(parseInt(defaultBudget)+parseInt(change)) / parseInt(defaultBudget)) * 100);
 
     console.log(`date default :: ${parseInt(parseInt(defaultBudget)+parseInt(change)) / parseInt(defaultBudget)}`);

@@ -81,6 +81,7 @@ export default function CreateEventButton({
                     buttonClick={buttonClick}
                 />
             )}
+            
             {showSignInModalOn && (
                 <SignInModal
                     user={user}

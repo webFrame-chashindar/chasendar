@@ -46,6 +46,7 @@ function LoginComponent(props) {
             }
         });
     };
+    
     return (
         <div className="login-box">
             <Container id="panel">

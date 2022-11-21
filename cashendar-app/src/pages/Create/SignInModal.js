@@ -20,9 +20,6 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     const [isPlusBudget, setIsPlusBudget] = useState(false);
     const [isMinusBudget, setIsMinusBudget] = useState(false);
 
-    // const [newBudget, setNewBudget] = useState();
-    // const [newChange, setNewChange] = useState();
-
     const plusCategory = ["월급", "용돈", "금융", "사업", "기타"];
     const minusCategory = ["음식", "문화", "교육", "의료/건강", "기타"];
     // const [categoryCnt, setCategoryCnt] = useState([0,0,0,0,0]);

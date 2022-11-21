@@ -239,6 +239,7 @@ const Calendar = forwardRef(
                                 custom1: {
                                     text: "Change View",
                                     click: function () {
+                                        
                                         // 클릭시 달력 출력 모드를 변경한다
                                         if (SelectCalendar === 1) {
                                             setSelectCalendar(2);

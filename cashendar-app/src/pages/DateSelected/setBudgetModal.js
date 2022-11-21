@@ -25,7 +25,6 @@ export default function setBudgetModal({user, defaultBudget, setDefaultBudget,se
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">Setting Your Budget</Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
                 <Form>
                     <Form.Group>
