@@ -12,6 +12,8 @@ function App() {
     const [currentUser, setUser] = useState();
     const [defaultBudget, setDefaultBudget] = useState();
     const [change, setChange] = useState();
+    const [minus, setMinus] = useState();
+    const [plus, setPlus] = useState();
     const [buttonClick, setButtonClick] = useState(false);
     //
     if (buttonClick === true) {
@@ -30,6 +32,10 @@ function App() {
                     setDefaultBudget={setDefaultBudget}
                     change={change}
                     setChange={setChange}
+                    plus = {plus}
+                    setPlus = {setPlus}
+                    minus={minus}
+                    setMinus={setMinus}
                     //변경
                     buttonClick={(check) => setButtonClick(check)}
                 />
@@ -40,6 +46,10 @@ function App() {
                     setDefaultBudget={setDefaultBudget}
                     change={change}
                     setChange={setChange}
+                    plus = {plus}
+                    setPlus = {setPlus}
+                    minus={minus}
+                    setMinus={setMinus}
                     ref={myRef}
                     buttonClick={buttonClick}
                     setButtonClick={setButtonClick}

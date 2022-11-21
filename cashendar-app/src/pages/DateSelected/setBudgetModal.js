@@ -2,12 +2,15 @@ import React from 'react'
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import { db } from "../../fbase/fbase";
 import { updateDoc,getDoc,setDoc, doc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
-export default function setBudgetModal({user, defaultBudget, setDefaultBudget, handleShow, show, onHide}) {
+export default function setBudgetModal({user, defaultBudget, setDefaultBudget,setChange, handleShow, show, onHide}) {
     const updateUserInfo = async () => {
+        setChange(0);
         await updateDoc(doc(db, "userInfo",user), 
             {user : user,
-            budget : defaultBudget})
+            budget : defaultBudget,
+            change : 0})
     }
 
   return (

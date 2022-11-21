@@ -10,7 +10,7 @@ import ReactApexChart from 'react-apexcharts';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../fbase/fbase";
 
-function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, change, setChange, curMonth}) {
+function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, change, setChange,plus, minus, curMonth}) {
     const category = ["food", "culture", "traffic", "doc", "etc"];
     const categoryCnt = [0,0,0,0,0];
 
@@ -18,8 +18,6 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
     const handleBudgetModal = () => {
         setShowBudgetModal(false);
     }
-
-    
 
     // const financeList = [];
 
@@ -104,7 +102,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
           title: {
             text: '카테고리별 지출 통계',
             floating: true,
-            offsetY: 220,
+            offsetY: 0,
             align: 'center',
             style: {
               color: '#444'
@@ -134,11 +132,14 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
                     </div>
                     
                 </span>
-                {showBudgetModal && <BudgetModal user={user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} handleShow = {handleBudgetModal} show={showBudgetModal} onHide={() => setShowBudgetModal(false)}/>}
+                {showBudgetModal && <BudgetModal user={user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} setChange = {setChange} handleShow = {handleBudgetModal} show={showBudgetModal} onHide={() => setShowBudgetModal(false)}/>}
                     
                 {/* parseInt(change) === NaN ? defaultBudget : parseInt(defaultBudget) + parseInt(change) */}
                 <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget) + parseInt(change)}</span> 
-
+                <span class="list-group-item list-group-item-action disabled">
+                  <div>이번 달 수입 : {parseInt(plus)} </div>
+                  <div>이번 달 지출 : {parseInt(minus)}</div>
+                </span>
             </div>
 
             <div class="list-group mb-2">

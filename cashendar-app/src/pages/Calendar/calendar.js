@@ -32,6 +32,10 @@ const Calendar = forwardRef(
             setDefaultBudget,
             change,
             setChange,
+            plus,
+            setPlus,
+            minus,
+            setMinus
             // buttonClick,
             // setButtonClick,
         },
@@ -169,11 +173,15 @@ const Calendar = forwardRef(
             if (userInfoDoc.exists()) {
               setDefaultBudget(userInfoDoc.data().budget);
               setChange(userInfoDoc.data().change);
+              setPlus(userInfoDoc.data().plus);
+              setMinus(userInfoDoc.data().minus);
             } else {
                 userInfoRef = await setDoc(doc(db, "userInfo", user), {
                     user : user,
                     budget : 1000000,
-                    change : 0
+                    change : 0,
+                    plus : 0,
+                    minus : 0
                   });
             }}, [user])
 
@@ -263,6 +271,8 @@ const Calendar = forwardRef(
                             setDefaultBudget={setDefaultBudget}
                             change={change}
                             setChange = {setChange}
+                            plus = {plus}
+                            minus = {minus}
                             curMonth={new Date().getMonth() + 1}
                         />
                     )}

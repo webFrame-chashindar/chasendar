@@ -9,7 +9,7 @@ import { collection } from "firebase/firestore";
 const colorClasses = ["primary","secondary", "info", "warning", "danger"];
 // const colorIsSelected = [true,false,false,false,false ];
 
-const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, handleShow, show, onHide, buttonClick = f => f}) => {
+const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, plus, setPlus, minus, setMinus, handleShow, show, onHide, buttonClick = f => f}) => {
     const [isPlus,setIsPlus] = useState(true);
 
     const [title, setTitle] = useState('');
@@ -17,8 +17,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     const [date, setDate] = useState('');
     const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
-    const [isPlusBudget, setIsPlusBudget] = useState(true);
-    const [isMinusBudget, setIsMinusBudget] = useState(true);
+    const [isPlusBudget, setIsPlusBudget] = useState(false);
+    const [isMinusBudget, setIsMinusBudget] = useState(false);
 
     // const [newBudget, setNewBudget] = useState();
     // const [newChange, setNewChange] = useState();
@@ -48,12 +48,28 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     };
 
     const updateChangeInfo = async () => {
-        const newChange = parseInt(change) - parseInt(amount)
+        const newChange = parseInt(change) + parseInt(amount)
         await updateDoc(doc(db, "userInfo", user), 
         {user : user,
         change : newChange})
         setChange(newChange)
-      };
+    };
+
+    const updatePlusInfo = async () => {
+        const newPlus = parseInt(plus) + parseInt(amount)
+        await updateDoc(doc(db, "userInfo", user), 
+        {user : user,
+        plus : newPlus})
+        setPlus(newPlus)
+    };
+
+    const updateMinusInfo = async () => {
+        const newMinus = parseInt(minus) + parseInt(amount)
+        await updateDoc(doc(db, "userInfo", user), 
+        {user : user,
+        minus : newMinus})
+        setPlus(newMinus)
+    };
 
     const financeCollctionRef = collection(db, "finance");
     const saveFinance = async () => {
@@ -168,6 +184,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                             className="my-3"
                             onClick={() => {
                                 {isPlusBudget && updateBudgetInfo()}
+                                {updatePlusInfo()}
+                                // {setPlus(parseInt(plus) + parseInt(amount))}
                                 {saveFinance()};
                                 {handleShow()};
                                 {buttonClick(true)};
@@ -240,6 +258,8 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                             className="my-3"
                             onClick={() => {
                                 {isMinusBudget && updateChangeInfo()}
+                                {updateMinusInfo()}
+                                // {setMinus(parseInt(minus) + parseInt(amount))}
                                 {saveFinance()};
                                 {handleShow()};
                                 //변경
