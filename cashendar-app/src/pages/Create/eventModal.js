@@ -1,11 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState} from "react";
 import { Modal, Button, Form, Container } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css"
 import { db } from "../../fbase/fbase";
 import DatePicker from "react-datepicker";
-import TimePicker from 'react-time-picker';
-import { FirebaseError } from "firebase/app";
-import { addDoc, Firestore } from "firebase/firestore";
+import { addDoc } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 
 const labelsColorClasses = ["primary","secondary", "info", "warning", "danger"];
