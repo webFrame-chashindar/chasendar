@@ -134,7 +134,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
                 {showBudgetModal && <BudgetModal user={user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} setChange = {setChange} handleShow = {handleBudgetModal} show={showBudgetModal} onHide={() => setShowBudgetModal(false)}/>}
                     
                 {/* parseInt(change) === NaN ? defaultBudget : parseInt(defaultBudget) + parseInt(change) */}
-                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget) + parseInt(change)}</span> 
+                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget)}</span> 
                 <span class="list-group-item list-group-item-action disabled">
                   <div>이번 달 수입 : {parseInt(plus)} </div>
                   <div>이번 달 지출 : {parseInt(minus)}</div>
