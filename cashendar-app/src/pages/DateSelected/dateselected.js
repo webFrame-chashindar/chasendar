@@ -165,7 +165,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
                             </div>
                         </fieldset>
                     </span>         
-                )}        
+                )}
             </div>
         </Stack>
     </div>

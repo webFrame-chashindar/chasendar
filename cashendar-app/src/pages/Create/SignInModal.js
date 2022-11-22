@@ -18,7 +18,7 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     const [selColor, setSelColor] = useState('');
     const [selCategory, setSelCategory] = useState('');
     const [isPlusBudget, setIsPlusBudget] = useState(false);
-    const [isMinusBudget, setIsMinusBudget] = useState(false);
+    const [isMinusBudget, setIsMinusBudget] = useState(true);
 
     const plusCategory = ["월급", "용돈", "금융", "사업", "기타"];
     const minusCategory = ["음식", "문화", "교육", "의료/건강", "기타"];
@@ -35,17 +35,19 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
         // console.log(e.target.color);
     }
 
-
     const updateBudgetInfo = async () => {
         const newBudget = parseInt(defaultBudget) + parseInt(amount)
+        const newChange = parseInt(change) + parseInt(amount)
         await updateDoc(doc(db, "userInfo", user), 
         {user : user,
+        change : newChange,
         budget : newBudget})
         setDefaultBudget(newBudget)
+        setChange(newChange)
     };
 
     const updateChangeInfo = async () => {
-        const newChange = parseInt(change) + parseInt(amount)
+        const newChange = parseInt(change) - parseInt(amount)
         await updateDoc(doc(db, "userInfo", user), 
         {user : user,
         change : newChange})
@@ -65,7 +67,7 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
         await updateDoc(doc(db, "userInfo", user), 
         {user : user,
         minus : newMinus})
-        setPlus(newMinus)
+        setMinus(newMinus)
     };
 
     const financeCollctionRef = collection(db, "finance");
@@ -103,7 +105,6 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
                 <Modal.Title id="contained-modal-title-vcenter">Create New Finance</Modal.Title>
             </Modal.Header>
 
-            
             <Modal.Body>
                 <Button block variant="info" 
                         type="button" 

@@ -7,10 +7,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 export default function setBudgetModal({user, defaultBudget, setDefaultBudget,setChange, handleShow, show, onHide}) {
     const updateUserInfo = async () => {
         setChange(0);
-        await updateDoc(doc(db, "userInfo",user), 
+        await updateDoc(doc(db, "userInfo", user), 
             {user : user,
-            budget : defaultBudget,
-            change : 0})
+            budget : defaultBudget
+            })
     }
 
   return (
