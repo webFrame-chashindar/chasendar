@@ -9,7 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import { collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getDoc, setDoc, doc, query, orderBy } from "firebase/firestore";
 import { useMemo } from "react";
 
 import "./calendar.css";
@@ -70,7 +70,7 @@ const Calendar = forwardRef(
 
         // 플랜 컬렉션에서 읽어오는 코드
         const getPlan = async () => {
-            const data = await getDocs(planCollection);
+            const data = await getDocs(query(planCollection, orderBy('startDate', 'asc')));
             const dataList = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -89,29 +89,34 @@ const Calendar = forwardRef(
                 // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
                 backgroundColor:
                     value.color === "info"
-                        ? "#54B4D3"
+                        ? "#6cc3d5"
                         : value.color === "secondary"
-                            ? "#9FA6B2"
+                            ? "#f3969a"
                             : value.color === "danger"
-                                ? "#DC4C64"
+                                ? "#ff7851"
                                 : value.color === "warning"
-                                    ? "#E4A11B"
+                                    ? "#ffce67"
                                     : value.color === "primary"
-                                        ? "#3B71CA"
+                                        ? "#78c2ad"
                                         : value.color,
                 borderColor:
                     value.color === "info"
-                        ? "#54B4D3"
+                        ? "#6cc3d5"
                         : value.color === "secondary"
-                            ? "#9FA6B2"
+                            ? "#f3969a"
                             : value.color === "danger"
-                                ? "#DC4C64"
+                                ? "#ff7851"
                                 : value.color === "warning"
-                                    ? "#E4A11B"
+                                    ? "#ffce67"
                                     : value.color === "primary"
-                                        ? "#3B71CA"
+                                        ? "#78c2ad"
                                         : value.color,
                 description: value.description,
+                checkDate: new Date(
+                    value.startDate.toDate().getTime() -
+                    value.startDate.toDate().getTimezoneOffset() * 60000
+                )
+                    .toISOString(),
             }));
             console.log(planList);
             setEventList(planList.filter((value) => value.user === user));
@@ -119,7 +124,7 @@ const Calendar = forwardRef(
         };
         // finance 컬렉션에서 읽어오는 코드
         const getFinance = async () => {
-            const data = await getDocs(financeCollection);
+            const data = await getDocs(query(financeCollection, orderBy('date', 'asc')));
             const dataList = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,

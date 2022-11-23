@@ -153,13 +153,13 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
 
             <div class="list-group">
                 <span class="list-group-item list-group-item-action active"><h5>이달의 일정</h5></span>
-                {eventList.map((e, i) => (parseInt(curMonth) === parseInt(e.start.slice(5,7))) && 
+                {eventList.map((e, i) => (parseInt(curMonth) === parseInt(e.checkDate.slice(5,7))) && 
                     <span class="list-group-item list-group-item-action">
                         <fieldset class="form-group">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id={e.title + e.start}></input>
                                 <label class="form-check-label" for={e.title + e.start}>
-                                    <h6><b>{e.start.slice(0,10)}</b></h6>
+                                    <h6><b>{e.checkDate.slice(0,10)}</b></h6>
                                     <p>{e.title}</p>
                                 </label>
                             </div>
