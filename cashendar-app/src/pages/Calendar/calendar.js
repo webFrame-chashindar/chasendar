@@ -9,15 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import {
-    collection,
-    getDocs,
-    getDoc,
-    setDoc,
-    doc,
-    query,
-    orderBy,
-} from "firebase/firestore";
+import { collection, getDoc, setDoc, doc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { useMemo } from "react";
 
 import "./calendar.css";
@@ -30,9 +22,6 @@ var d = new Date(); // 출력형태 Tue Feb 07 2020 23:25:32 GMT+0900 (KST)
 // 빈 이벤트 목록 배열
 var Events = [];
 
-// 캘린더 레퍼런스 생성
-//const calendarRef = React.createRef();
-
 const Calendar = forwardRef(
     (
         {
@@ -44,7 +33,7 @@ const Calendar = forwardRef(
             plus,
             setPlus,
             minus,
-            setMinus,
+            setMinus
         },
         ref
     ) => {
@@ -80,96 +69,107 @@ const Calendar = forwardRef(
         const planCollection = collection(db, "plan"); // 파이어스토어 plan 컬렉션
         const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
 
-        // 플랜 컬렉션에서 읽어오는 코드
         const getPlan = async () => {
-            const data = await getDocs(
-                query(planCollection, orderBy("startDate", "asc"))
-            );
-            const dataList = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            planList = dataList.map((value) => ({
-                title: value.title,
-                pureStart: value.startDate,
-                pureEnd: value.endDate,
-                start: value.startDate.toDate().toISOString(),
-                end: value.endDate.toDate().toISOString(),
-                startD: value.startDate
-                    .toDate()
-                    .setHours(value.startDate.toDate().getHours() + 9),
-                endD: value.endDate
-                    .toDate()
-                    .setHours(value.endDate.toDate().getHours() + 9),
-                user: value.user,
-                // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
-                backgroundColor:
-                    value.color === "info"
-                        ? "#6cc3d5"
-                        : value.color === "secondary"
-                        ? "#f3969a"
-                        : value.color === "danger"
-                        ? "#ff7851"
-                        : value.color === "warning"
-                        ? "#ffce67"
-                        : value.color === "primary"
-                        ? "#78c2ad"
-                        : value.color,
-                borderColor:
-                    value.color === "info"
-                        ? "#6cc3d5"
-                        : value.color === "secondary"
-                        ? "#f3969a"
-                        : value.color === "danger"
-                        ? "#ff7851"
-                        : value.color === "warning"
-                        ? "#ffce67"
-                        : value.color === "primary"
-                        ? "#78c2ad"
-                        : value.color,
-                description: value.description,
-                checkDate: new Date(
-                    value.startDate.toDate().getTime() -
+            const data = query(planCollection, orderBy('startDate', 'asc'));
+            onSnapshot(data, (querySnapshot) => {
+                const planList2 = [];
+                querySnapshot.forEach((doc) => {
+                    planList2.push(doc.data());
+                });
+                console.log(planList2);
+                planList = planList2.map((value) => ({
+                    title: value.title,
+                    pureStart: value.startDate,
+                    pureEnd: value.endDate,
+                    start: value.startDate.toDate().toISOString(),
+                    end: value.endDate.toDate().toISOString(),
+                    startD: value.startDate
+                        .toDate()
+                        .setHours(value.startDate.toDate().getHours() + 9),
+                    endD: value.endDate
+                        .toDate()
+                        .setHours(value.endDate.toDate().getHours() + 9),
+                    user: value.user,
+                    // 색 변경 문자열로 바뀌면 backgroundColor: value.color 로 바꿀 것
+                    backgroundColor:
+                        value.color === "info"
+                            ? "#6cc3d5"
+                            : value.color === "secondary"
+                                ? "#f3969a"
+                                : value.color === "danger"
+                                    ? "#ff7851"
+                                    : value.color === "warning"
+                                        ? "#ffce67"
+                                        : value.color === "primary"
+                                            ? "#78c2ad"
+                                            : value.color,
+                    borderColor:
+                        value.color === "info"
+                            ? "#6cc3d5"
+                            : value.color === "secondary"
+                                ? "#f3969a"
+                                : value.color === "danger"
+                                    ? "#ff7851"
+                                    : value.color === "warning"
+                                        ? "#ffce67"
+                                        : value.color === "primary"
+                                            ? "#78c2ad"
+                                            : value.color,
+                    description: value.description,
+                    checkDate: new Date(
+                        value.startDate.toDate().getTime() -
                         value.startDate.toDate().getTimezoneOffset() * 60000
-                ).toISOString(),
-            }));
-            setEventList(planList.filter((value) => value.user === user));
+                    )
+                        .toISOString(),
+                }));
+                setEventList(planList.filter((value) => value.user === user));
+            })
         };
-        // finance 컬렉션에서 읽어오는 코드
+
+        // 원래 코드
+        // const getFinance = async () => {
+        //     const data = await getDocs(query(financeCollection, orderBy('date', 'asc')));
+        //     const dataList = data.docs.map((doc) => ({
+        //         ...doc.data(),
+        //         id: doc.id,
+        //     }));
+        //     planList = dataList.map((value) => ({
+        // 수입 지출 삭제코드
         const getFinance = async () => {
-            const data = await getDocs(
-                query(financeCollection, orderBy("date", "asc"))
-            );
-            const dataList = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            financeList = dataList.map((value) => ({
-                titleF: value.title,
-                title: value.amount,
-                category: value.category,
-                pureDate: value.date,
-                date: new Date(
-                    value.date.toDate().getTime() -
+            const data = query(financeCollection, orderBy('date', 'asc'));
+            onSnapshot(data, (querySnapshot) => {
+                const financeList2 = [];
+                querySnapshot.forEach((doc) => {
+                    financeList2.push(doc.data());
+                })
+                console.log(financeList2);
+                financeList = financeList2.map((value) => ({
+                    titleF: value.title,
+                    title: value.amount,
+                    category: value.category,
+                    pureDate: value.date,
+                    date: new Date(
+                        value.date.toDate().getTime() -
                         value.date.toDate().getTimezoneOffset() * 60000
-                )
-                    .toISOString()
-                    .slice(0, 10),
-                isBudet: value.isBudet,
-                isPlus: value.isPlus,
-                // 수입, 지출 색 설정
-                backgroundColor: value.isPlus ? "#0d6efd" : "#F05650",
-                borderColor: value.isPlus ? "#0d6efd" : "#F05650",
-                user: value.user,
-            }));
-            setFinanceEList(financeList.filter((value) => value.user === user));
+                    )
+                        .toISOString()
+                        .slice(0, 10),
+                    isBudet: value.isBudet,
+                    isPlus: value.isPlus,
+                    // 수입, 지출 색 설정
+                    backgroundColor: value.isPlus ? "#0d6efd" : "#F05650",
+                    borderColor: value.isPlus ? "#0d6efd" : "#F05650",
+                    user: value.user,
+                }));
+                setFinanceEList(financeList.filter((value) => value.user === user));
+            })
         };
-        /*
+
         useEffect(() => {
             getPlan();
             getFinance();
         }, []);
-        */
+
         useMemo(async () => {
             const userInfoRef = doc(db, "userInfo", user);
             const userInfoDoc = await getDoc(userInfoRef);
@@ -184,12 +184,12 @@ const Calendar = forwardRef(
                     budget: 1000000,
                     change: 0,
                     plus: 0,
-                    minus: 0,
+                    minus: 0
                 });
             }
-        }, [user]);
-        /*
-        if (buttonClick2 == true) {
+        }, [user])
+        
+        if (buttonClick2 === true) {
             console.log("조건문 실행");
             getPlan();
             console.log(eventList);
@@ -197,22 +197,6 @@ const Calendar = forwardRef(
             console.log(financeEList);
             setButtonClick2(false);
         }
-        */
-        useEffect(() => {
-            console.log("buttonClick2 useEffect 실행");
-            getPlan();
-            getFinance();
-        }, [buttonClick2]);
-
-        // useEffect(() => {
-        //     getPlan();
-        //     getFinance();
-        // }, [eventList]);
-
-        // useEffect(() => {
-        //     getPlan();
-        //     getFinance();
-        // }, [financeEList]);
 
         return (
             <div className="calendar-container">
@@ -243,7 +227,9 @@ const Calendar = forwardRef(
                                 }
                             }}
                             // 달력에 표시될 캘린더
-                            events={Events}
+                            events={
+                                Events
+                            }
                             selectable="true"
                             dayMaxEvents="true" // 달력에 나올 이벤트 갯수 제한
                             views={{
