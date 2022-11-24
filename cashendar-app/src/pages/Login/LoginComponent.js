@@ -27,7 +27,7 @@ function LoginComponent(props) {
             .then((userCredential) => {
                 // Signed In
                 const user = userCredential.user;
-                console.log(user);
+                //console.log(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -39,14 +39,16 @@ function LoginComponent(props) {
                 // https://firebase.google.com/docs/reference/js/firebase.User
                 const userEmail = user.email;
                 props.setUser(userEmail);
+                sessionStorage.setItem("user", userEmail);
             } else {
                 // User is signed out
                 // ...
                 props.setUser(null);
+                sessionStorage.setItem("user", null);
             }
         });
     };
-    
+
     return (
         <div className="login-box">
             <Container id="panel">
