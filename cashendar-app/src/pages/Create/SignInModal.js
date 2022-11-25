@@ -36,13 +36,10 @@ const SignInModal = ({user, defaultBudget, setDefaultBudget, change, setChange, 
     }
 
     const updateBudgetInfo = async () => {
-        const newBudget = parseInt(defaultBudget) + parseInt(amount)
         const newChange = parseInt(change) + parseInt(amount)
         await updateDoc(doc(db, "userInfo", user), 
         {user : user,
-        change : newChange,
-        budget : newBudget})
-        setDefaultBudget(newBudget)
+        change : newChange})
         setChange(newChange)
     };
 

@@ -134,7 +134,7 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
                 {showBudgetModal && <BudgetModal user={user} defaultBudget = {defaultBudget} setDefaultBudget = {setDefaultBudget} setChange = {setChange} handleShow = {handleBudgetModal} show={showBudgetModal} onHide={() => setShowBudgetModal(false)}/>}
                     
                 {/* parseInt(change) === NaN ? defaultBudget : parseInt(defaultBudget) + parseInt(change) */}
-                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget)}</span> 
+                <span class="list-group-item list-group-item-action disabled">잔여 예산 : {parseInt(defaultBudget) + parseInt(change)}</span> 
                 <span class="list-group-item list-group-item-action disabled">
                   <div>이번 달 수입 : {parseInt(plus)} </div>
                   <div>이번 달 지출 : {parseInt(minus)}</div>
@@ -175,22 +175,3 @@ function Date({user, eventList,financeEList, defaultBudget, setDefaultBudget, ch
 
 export default Date;
 
-
-
-{/* <div className="bg-light border">
-                    <h3>이달의 예산</h3>
-                    <button type="button" class="btn btn-lg btn-outline-primary mb-2">
-                        예산 설정</button>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{width: "70%"}}></div>
-                    </div>
-                </div>
-                <div className="bg-light border">
-                <h3>이달의 소비</h3>
-                
-
-                </div>
-                <div className="bg-light border">
-                    <h3>이달의 일정</h3>
-                    
-                </div> */}

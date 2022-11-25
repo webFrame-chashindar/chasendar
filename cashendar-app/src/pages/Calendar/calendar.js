@@ -9,7 +9,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import { collection, getDoc, setDoc, doc, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, getDoc, setDoc, doc, query, orderBy, onSnapshot} from "firebase/firestore";
 import { useMemo } from "react";
 
 import "./calendar.css";
@@ -164,7 +164,6 @@ const Calendar = forwardRef(
                 setFinanceEList(financeList.filter((value) => value.user === user));
             })
         };
-
         useEffect(() => {
             getPlan();
             getFinance();
@@ -260,8 +259,10 @@ const Calendar = forwardRef(
                             user={user}
                             ScheduleDate={ScheduleDate}
                             eventList={eventList}
+                            getPlane = {getPlan}
+                            getFinance = {getFinance}
                             financeEList={financeEList}
-                            buttonClick2={(check) => setButtonClick2(check)}
+                            buttonClick2={(check)=> setButtonClick2(check)}
                         />
                     )}
                     {!selectedDate && (

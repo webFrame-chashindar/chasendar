@@ -1,6 +1,6 @@
 import { issuedAtTime } from "@firebase/util";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { CarouselItem } from "react-bootstrap";
 import "./dateDetail.css";
 import { db } from "../../fbase/fbase";
@@ -103,12 +103,12 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
                         .map((item, i) => {
                             return (
                                 <li
-                                    // onClick={() => {
-                                    //     { financeClick(item) };
-                                    // }}
+                                    onClick={() => {
+                                        { financeClick(item) };
+                                    }}
                                     key={i}
-                                    // class="list-group-item"
-                                    class="list-group-item list-group-item-action disabled"
+                                    class="list-group-item"
+                                    // class="list-group-item list-group-item-action disabled"
                                 >
                                     {item.isPlus ? (
                                         <p class="item_amount">{item.title}</p>
