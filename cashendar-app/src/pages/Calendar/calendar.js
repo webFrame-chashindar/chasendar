@@ -101,30 +101,30 @@ const Calendar = forwardRef(
                         value.color === "info"
                             ? "#6cc3d5"
                             : value.color === "secondary"
-                            ? "#f3969a"
-                            : value.color === "danger"
-                            ? "#ff7851"
-                            : value.color === "warning"
-                            ? "#ffce67"
-                            : value.color === "primary"
-                            ? "#78c2ad"
-                            : value.color,
+                                ? "#f3969a"
+                                : value.color === "danger"
+                                    ? "#ff7851"
+                                    : value.color === "warning"
+                                        ? "#ffce67"
+                                        : value.color === "primary"
+                                            ? "#78c2ad"
+                                            : value.color,
                     borderColor:
                         value.color === "info"
                             ? "#6cc3d5"
                             : value.color === "secondary"
-                            ? "#f3969a"
-                            : value.color === "danger"
-                            ? "#ff7851"
-                            : value.color === "warning"
-                            ? "#ffce67"
-                            : value.color === "primary"
-                            ? "#78c2ad"
-                            : value.color,
+                                ? "#f3969a"
+                                : value.color === "danger"
+                                    ? "#ff7851"
+                                    : value.color === "warning"
+                                        ? "#ffce67"
+                                        : value.color === "primary"
+                                            ? "#78c2ad"
+                                            : value.color,
                     description: value.description,
                     checkDate: new Date(
                         value.startDate.toDate().getTime() -
-                            value.startDate.toDate().getTimezoneOffset() * 60000
+                        value.startDate.toDate().getTimezoneOffset() * 60000
                     ).toISOString(),
                 }));
                 setEventList(planList.filter((value) => value.user === user));
@@ -145,7 +145,7 @@ const Calendar = forwardRef(
                     pureDate: value.date,
                     date: new Date(
                         value.date.toDate().getTime() -
-                            value.date.toDate().getTimezoneOffset() * 60000
+                        value.date.toDate().getTimezoneOffset() * 60000
                     )
                         .toISOString()
                         .slice(0, 10),
@@ -161,13 +161,13 @@ const Calendar = forwardRef(
                 );
             });
         };
-        
+
         useEffect(() => {
             getPlan();
             getFinance();
         }, []);
 
-        useEffect(async () => {
+        useMemo(async () => {
             const userInfoRef = doc(db, "userInfo", user);
             const userInfoDoc = await getDoc(userInfoRef);
             if (userInfoDoc.exists()) {
@@ -176,15 +176,19 @@ const Calendar = forwardRef(
                 setPlus(userInfoDoc.data().plus);
                 setMinus(userInfoDoc.data().minus);
             } else {
+                setDefaultBudget(1000000);
+                setChange(0);
+                setPlus(0);
+                setMinus(0);
                 userInfoRef = await setDoc(doc(db, "userInfo", user), {
                     user: user,
                     budget: 1000000,
                     change: 0,
                     plus: 0,
-                    minus: 0,
+                    minus: 0
                 });
             }
-        }, [user]);
+        }, [user])
 
         return (
             <div className="calendar-container">
