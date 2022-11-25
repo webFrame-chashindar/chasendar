@@ -1,5 +1,5 @@
 import React from "react";
-import DateSelected from "./dateselected";
+import DateSelected from "./dateUnselected";
 import { Stack } from "react-bootstrap";
 import { useState, useEffect, useMemo } from "react";
 import BudgetModal from "./setBudgetModal";
@@ -10,7 +10,7 @@ import ReactApexChart from "react-apexcharts";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../fbase/fbase";
 
-function Date({
+function Stat({
     user,
     eventList,
     financeEList,
@@ -32,7 +32,7 @@ function Date({
 
     // const financeList = [];
 
-    useMemo(() => {
+    useEffect(() => {
         for (var i in category) {
             var cost = financeEList.filter((f) => f.category === category[i]);
             if (cost !== null) {
@@ -42,7 +42,7 @@ function Date({
                 categoryCnt[i] = sum;
             }
         }
-    });
+    }, categoryCnt);
 
     const chartOpt = {
         series: [
@@ -256,4 +256,4 @@ function Date({
     );
 }
 
-export default Date;
+export default Stat;
