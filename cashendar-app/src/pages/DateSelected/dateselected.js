@@ -23,7 +23,8 @@ function Date({
     curMonth,
 }) {
     const category = ["food", "culture", "traffic", "doc", "etc"];
-    const categoryCnt = [0, 0, 0, 0, 0];
+    const categoryCnt = [0,0,0,0,0];
+    const [categoryAmount, setCategoryAmount] = useState([0, 0, 0, 0, 0]);
 
     const [showBudgetModal, setShowBudgetModal] = useState(false);
     const handleBudgetModal = () => {
@@ -32,28 +33,32 @@ function Date({
 
     // const financeList = [];
 
-    useMemo(() => {
+    useEffect(() => {
+      console.log("hihi");
         for (var i in category) {
             var cost = financeEList.filter((f) => f.category === category[i]);
             if (cost !== null) {
                 var sum = cost.reduce((sum, item) => {
-                    return sum + item.title;
+                    return parseInt(sum) + parseInt(item.title);
                 }, 0);
                 categoryCnt[i] = sum;
-            }
+            }   
         }
-    });
+        console.log(`how much ::: ${categoryCnt}`)
+        setCategoryAmount([categoryCnt[0],categoryCnt[1],categoryCnt[2],categoryCnt[3],categoryCnt[4]])
+    }, [categoryAmount]);
+        // 
 
     const chartOpt = {
         series: [
             {
                 name: "count",
                 data: [
-                    categoryCnt[0],
-                    categoryCnt[1],
-                    categoryCnt[2],
-                    categoryCnt[3],
-                    categoryCnt[4],
+                    categoryAmount[0],
+                    categoryAmount[1],
+                    categoryAmount[2],
+                    categoryAmount[3],
+                    categoryAmount[4],
                 ],
             },
         ],
@@ -72,9 +77,6 @@ function Date({
             },
             dataLabels: {
                 enabled: false,
-                formatter: function (val) {
-                    return val + "%";
-                },
                 offsetY: -20,
                 style: {
                     fontSize: "12px",
