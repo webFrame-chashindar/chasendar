@@ -21,7 +21,7 @@ import {
 import { useMemo } from "react";
 
 import "./calendar.css";
-import DateSelected from "../DateSelected/dateUnselected";
+import DateUnselected from "../DateSelected/dateUnselected";
 import DateDetail from "../DateSelected/dateDetail";
 
 // 한국 시간으로 맞추기 전 Date 객체
@@ -252,7 +252,8 @@ const Calendar = forwardRef(
                         />
                     )}
                     {!selectedDate && (
-                        <DateSelected
+                        <DateUnselected
+
                             className="dateSelected"
                             user={user}
                             eventList={eventList}

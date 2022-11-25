@@ -20,7 +20,7 @@ function Stat({
     setChange,
     plus,
     minus,
-    curMonth,
+    curMonth
 }) {
     const category = ["food", "culture", "traffic", "doc", "etc"];
     const categoryCnt = [0,0,0,0,0];
@@ -33,21 +33,18 @@ function Stat({
 
     // const financeList = [];
 
-    useEffect(() => {
-      console.log("hihi");
+    useEffect( () => {
         for (var i in category) {
             var cost = financeEList.filter((f) => f.category === category[i]);
             if (cost !== null) {
-                var sum = cost.reduce((sum, item) => {
-                    return parseInt(sum) + parseInt(item.title);
-                }, 0);
+                var sum = cost.reduce((sum, item) => 
+                    parseInt(sum) + parseInt(item.title)
+                , 0);
                 categoryCnt[i] = sum;
             }   
         }
-        console.log(`how much ::: ${categoryCnt}`)
         setCategoryAmount([categoryCnt[0],categoryCnt[1],categoryCnt[2],categoryCnt[3],categoryCnt[4]])
-    }, [categoryAmount]);
-        // 
+    }, [financeEList]);
 
     const chartOpt = {
         series: [

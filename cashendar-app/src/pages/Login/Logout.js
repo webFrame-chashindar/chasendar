@@ -17,7 +17,7 @@ function Logout({ id }) {
                 type="button"
                 className="btn btn-outline-dark"
                 size="xs"
-                onClick={onLogOutClick}
+                onClick={ () => onLogOutClick()}
             >
                 Logout
             </Button>
