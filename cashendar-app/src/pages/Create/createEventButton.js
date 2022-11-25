@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SignInModal from "./SignInModal";
 import EventModal from "./eventModal";
-import { db } from "../../fbase/fbase";
-import { setDoc, doc } from "firebase/firestore";
 
 import "./create.css";
 
@@ -29,15 +27,6 @@ export default function CreateEventButton({
     const handleShowSignInModal = () => {
         setShowSignInModalOn(false);
     };
-
-    //사용자 예산 저장 -> 미완성
-    // const saveUserInfo = async () => {
-    //     console.log(`save userInfo : ${user}`)
-    //     await setDoc(doc(db, "userInfo", {user}), {
-    //        user : {user},
-    //        budget : defaultBudget
-    //     });
-    //   };
 
     return (
         <>
@@ -81,7 +70,7 @@ export default function CreateEventButton({
                     buttonClick={buttonClick}
                 />
             )}
-            
+
             {showSignInModalOn && (
                 <SignInModal
                     user={user}
@@ -89,10 +78,10 @@ export default function CreateEventButton({
                     setDefaultBudget={setDefaultBudget}
                     change={change}
                     setChange={setChange}
-                    plus = {plus}
-                    setPlus = {setPlus}
-                    minus = {minus}
-                    setMinus = {setMinus}
+                    plus={plus}
+                    setPlus={setPlus}
+                    minus={minus}
+                    setMinus={setMinus}
                     handleShow={handleShowSignInModal}
                     show={showSignInModalOn}
                     onHide={() => setShowSignInModalOn(false)}

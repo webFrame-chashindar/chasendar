@@ -15,7 +15,7 @@ function Logout({ id }) {
             <Button
                 id="logout"
                 type="button"
-                class="btn btn-outline-dark"
+                className="btn btn-outline-dark"
                 size="xs"
                 onClick={onLogOutClick}
             >

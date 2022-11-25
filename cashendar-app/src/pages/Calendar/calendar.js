@@ -9,7 +9,15 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // 달력에서 day클릭을 위해
 
 import { db } from "../../fbase/fbase";
-import { collection, getDoc, setDoc, doc, query, orderBy, onSnapshot} from "firebase/firestore";
+import {
+    collection,
+    getDoc,
+    setDoc,
+    doc,
+    query,
+    orderBy,
+    onSnapshot,
+} from "firebase/firestore";
 import { useMemo } from "react";
 
 import "./calendar.css";
@@ -33,7 +41,7 @@ const Calendar = forwardRef(
             plus,
             setPlus,
             minus,
-            setMinus
+            setMinus,
         },
         ref
     ) => {
@@ -70,13 +78,12 @@ const Calendar = forwardRef(
         const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
 
         const getPlan = async () => {
-            const data = query(planCollection, orderBy('startDate', 'asc'));
+            const data = query(planCollection, orderBy("startDate", "asc"));
             onSnapshot(data, (querySnapshot) => {
                 const planList2 = [];
                 querySnapshot.forEach((doc) => {
                     planList2.push(doc.data());
                 });
-                console.log(planList2);
                 planList = planList2.map((value) => ({
                     title: value.title,
                     pureStart: value.startDate,
@@ -95,35 +102,34 @@ const Calendar = forwardRef(
                         value.color === "info"
                             ? "#6cc3d5"
                             : value.color === "secondary"
-                                ? "#f3969a"
-                                : value.color === "danger"
-                                    ? "#ff7851"
-                                    : value.color === "warning"
-                                        ? "#ffce67"
-                                        : value.color === "primary"
-                                            ? "#78c2ad"
-                                            : value.color,
+                            ? "#f3969a"
+                            : value.color === "danger"
+                            ? "#ff7851"
+                            : value.color === "warning"
+                            ? "#ffce67"
+                            : value.color === "primary"
+                            ? "#78c2ad"
+                            : value.color,
                     borderColor:
                         value.color === "info"
                             ? "#6cc3d5"
                             : value.color === "secondary"
-                                ? "#f3969a"
-                                : value.color === "danger"
-                                    ? "#ff7851"
-                                    : value.color === "warning"
-                                        ? "#ffce67"
-                                        : value.color === "primary"
-                                            ? "#78c2ad"
-                                            : value.color,
+                            ? "#f3969a"
+                            : value.color === "danger"
+                            ? "#ff7851"
+                            : value.color === "warning"
+                            ? "#ffce67"
+                            : value.color === "primary"
+                            ? "#78c2ad"
+                            : value.color,
                     description: value.description,
                     checkDate: new Date(
                         value.startDate.toDate().getTime() -
-                        value.startDate.toDate().getTimezoneOffset() * 60000
-                    )
-                        .toISOString(),
+                            value.startDate.toDate().getTimezoneOffset() * 60000
+                    ).toISOString(),
                 }));
                 setEventList(planList.filter((value) => value.user === user));
-            })
+            });
         };
 
         // 원래 코드
@@ -136,13 +142,12 @@ const Calendar = forwardRef(
         //     planList = dataList.map((value) => ({
         // 수입 지출 삭제코드
         const getFinance = async () => {
-            const data = query(financeCollection, orderBy('date', 'asc'));
+            const data = query(financeCollection, orderBy("date", "asc"));
             onSnapshot(data, (querySnapshot) => {
                 const financeList2 = [];
                 querySnapshot.forEach((doc) => {
                     financeList2.push(doc.data());
-                })
-                console.log(financeList2);
+                });
                 financeList = financeList2.map((value) => ({
                     titleF: value.title,
                     title: value.amount,
@@ -150,7 +155,7 @@ const Calendar = forwardRef(
                     pureDate: value.date,
                     date: new Date(
                         value.date.toDate().getTime() -
-                        value.date.toDate().getTimezoneOffset() * 60000
+                            value.date.toDate().getTimezoneOffset() * 60000
                     )
                         .toISOString()
                         .slice(0, 10),
@@ -161,8 +166,10 @@ const Calendar = forwardRef(
                     borderColor: value.isPlus ? "#0d6efd" : "#F05650",
                     user: value.user,
                 }));
-                setFinanceEList(financeList.filter((value) => value.user === user));
-            })
+                setFinanceEList(
+                    financeList.filter((value) => value.user === user)
+                );
+            });
         };
         useEffect(() => {
             getPlan();
@@ -183,17 +190,14 @@ const Calendar = forwardRef(
                     budget: 1000000,
                     change: 0,
                     plus: 0,
-                    minus: 0
+                    minus: 0,
                 });
             }
-        }, [user])
-        
+        }, [user]);
+
         if (buttonClick2 === true) {
-            console.log("조건문 실행");
             getPlan();
-            console.log(eventList);
             getFinance();
-            console.log(financeEList);
             setButtonClick2(false);
         }
 
@@ -226,9 +230,7 @@ const Calendar = forwardRef(
                                 }
                             }}
                             // 달력에 표시될 캘린더
-                            events={
-                                Events
-                            }
+                            events={Events}
                             selectable="true"
                             dayMaxEvents="true" // 달력에 나올 이벤트 갯수 제한
                             views={{
@@ -259,10 +261,10 @@ const Calendar = forwardRef(
                             user={user}
                             ScheduleDate={ScheduleDate}
                             eventList={eventList}
-                            getPlane = {getPlan}
-                            getFinance = {getFinance}
+                            getPlane={getPlan}
+                            getFinance={getFinance}
                             financeEList={financeEList}
-                            buttonClick2={(check)=> setButtonClick2(check)}
+                            buttonClick2={(check) => setButtonClick2(check)}
                         />
                     )}
                     {!selectedDate && (

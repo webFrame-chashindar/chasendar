@@ -27,7 +27,6 @@ function LoginComponent(props) {
             .then((userCredential) => {
                 // Signed In
                 const user = userCredential.user;
-                //console.log(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -35,14 +34,11 @@ function LoginComponent(props) {
             });
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
                 const userEmail = user.email;
                 props.setUser(userEmail);
                 sessionStorage.setItem("user", userEmail);
             } else {
                 // User is signed out
-                // ...
                 props.setUser(null);
                 sessionStorage.setItem("user", null);
             }
@@ -71,11 +67,7 @@ function LoginComponent(props) {
                         </Col>
                     </Form.Group>
 
-                    <Form.Group
-                        as={Row}
-                        className=""
-                        controlId="formPlaintextPassword"
-                    >
+                    <Form.Group as={Row} controlId="formPlaintextPassword">
                         <Col sm>
                             <Form.Control
                                 type="password"

@@ -1,4 +1,4 @@
-import { React, useContext, useState, useRef } from "react";
+import { React, useState, useRef } from "react";
 import LoginComponent from "./pages/Login/LoginComponent";
 import Calendar from "./pages/Calendar/calendar";
 import "./app.css";
@@ -61,16 +61,3 @@ function App() {
 }
 
 export default App;
-/*
-<MainHeader
-                    id="create-button"
-                    className="create-botton-container"
-                    user={currentUser}
-                    defaultBudget={defaultBudget}
-                    setDefaultBudget={setDefaultBudget}
-                    remainBudget={remainBudget}
-                    setRemainBudget={setRemainBudget}
-                    //변경
-                    buttonClick={(check) => setButtonClick(check)}
-                />
-                */

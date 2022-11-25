@@ -1,31 +1,39 @@
-import { issuedAtTime } from "@firebase/util";
 import React from "react";
-import { useState, useMemo, useEffect } from "react";
-import { CarouselItem } from "react-bootstrap";
 import "./dateDetail.css";
 import { db } from "../../fbase/fbase";
-import { collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    query,
+    where,
+    deleteDoc,
+} from "firebase/firestore";
 
-const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 = f => f }) => {
-
+const DateDetail = ({
+    user,
+    ScheduleDate,
+    eventList,
+    financeEList,
+    buttonClick2 = (f) => f,
+}) => {
     const planCollection = collection(db, "plan"); // 파이어스토어 plan 컬렉션
     const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
 
     const removePlan = async (item) => {
-        console.log(item.title)
-        console.log(item.pureStart)
-        console.log(item.pureEnd)
-        const data = await getDocs(query(planCollection,
-            where('title', '==', item.title),
-            where('startDate', '==', item.pureStart),
-            where('endDate', '==', item.pureEnd)));
+        const data = await getDocs(
+            query(
+                planCollection,
+                where("title", "==", item.title),
+                where("startDate", "==", item.pureStart),
+                where("endDate", "==", item.pureEnd)
+            )
+        );
         if (data.docs.length !== 0) {
             await deleteDoc(data.docs[0].ref);
         }
-    }
+    };
 
     function planClick(item) {
-        console.log("삭제함수");
         if (window.confirm("일정을 삭제하시겠습니까?")) {
             removePlan(item);
             buttonClick2(true);
@@ -35,17 +43,20 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
     }
 
     const removeFinance = async (item) => {
-        const data = await getDocs(query(financeCollection,
-            where('title', '==', item.titleF),
-            where('date', '==', item.pureDate),
-            where('amount', '==', item.title)));
+        const data = await getDocs(
+            query(
+                financeCollection,
+                where("title", "==", item.titleF),
+                where("date", "==", item.pureDate),
+                where("amount", "==", item.title)
+            )
+        );
         if (data.docs.length !== 0) {
             await deleteDoc(data.docs[0].ref);
         }
-    }
+    };
 
     function financeClick(item) {
-        console.log("삭제함수");
         if (window.confirm("수입 및 지출을 삭제하시겠습니까?")) {
             removeFinance(item);
             buttonClick2(true);
@@ -57,10 +68,10 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
         <div id="Detail">
             <p id="TodayDate">{ScheduleDate}</p>
             <div id="TodaySchedule">
-                <div class="list-group" id="daySchedule">
+                <div className="list-group" id="daySchedule">
                     <a
                         href="#"
-                        class="list-group-item list-group-item-action active"
+                        className="list-group-item list-group-item-action active"
                     >
                         일정
                     </a>
@@ -78,10 +89,12 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
                             return (
                                 <li
                                     onClick={() => {
-                                        { planClick(item) };
+                                        {
+                                            planClick(item);
+                                        }
                                     }}
                                     key={i}
-                                    class="list-group-item"
+                                    className="list-group-item"
                                 >
                                     {item.title}
                                 </li>
@@ -90,11 +103,11 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
                 </div>
             </div>
             <div id="TodayInOut">
-                <div class="list-group" id="daySchedule">
+                <div className="list-group" id="daySchedule">
                     <a
                         id="dayInOut"
                         href="#"
-                        class="list-group-item list-group-item-action active"
+                        className="list-group-item list-group-item-action active"
                     >
                         수입 및 지출
                     </a>
@@ -104,20 +117,24 @@ const DateDetail = ({ user, ScheduleDate, eventList, financeEList, buttonClick2 
                             return (
                                 <li
                                     onClick={() => {
-                                        { financeClick(item) };
+                                        {
+                                            financeClick(item);
+                                        }
                                     }}
                                     key={i}
-                                    class="list-group-item"
+                                    className="list-group-item"
                                     // class="list-group-item list-group-item-action disabled"
                                 >
                                     {item.isPlus ? (
-                                        <p class="item_amount">{item.title}</p>
+                                        <p className="item_amount">
+                                            {item.title}
+                                        </p>
                                     ) : (
-                                        <p class="item_amount" id="plus">
+                                        <p className="item_amount" id="plus">
                                             {item.title}
                                         </p>
                                     )}
-                                    <p class="item_title">{item.titleF}</p>
+                                    <p className="item_title">{item.titleF}</p>
                                 </li>
                             );
                         })}
