@@ -14,10 +14,9 @@ const DateDetail = ({
     ScheduleDate,
     eventList,
     financeEList,
-    buttonClick2 = (f) => f,
 }) => {
     const planCollection = collection(db, "plan"); // 파이어스토어 plan 컬렉션
-    const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
+    // const financeCollection = collection(db, "finance"); // 파이어스토어 finance 컬렉션
 
     const removePlan = async (item) => {
         const data = await getDocs(
@@ -36,34 +35,11 @@ const DateDetail = ({
     function planClick(item) {
         if (window.confirm("일정을 삭제하시겠습니까?")) {
             removePlan(item);
-            buttonClick2(true);
             alert("삭제 완료");
         } else {
         }
     }
 
-    const removeFinance = async (item) => {
-        const data = await getDocs(
-            query(
-                financeCollection,
-                where("title", "==", item.titleF),
-                where("date", "==", item.pureDate),
-                where("amount", "==", item.title)
-            )
-        );
-        if (data.docs.length !== 0) {
-            await deleteDoc(data.docs[0].ref);
-        }
-    };
-
-    function financeClick(item) {
-        if (window.confirm("수입 및 지출을 삭제하시겠습니까?")) {
-            removeFinance(item);
-            buttonClick2(true);
-            alert("삭제 완료");
-        } else {
-        }
-    }
     return (
         <div id="Detail">
             <p id="TodayDate">{ScheduleDate}</p>
@@ -116,14 +92,8 @@ const DateDetail = ({
                         .map((item, i) => {
                             return (
                                 <li
-                                    onClick={() => {
-                                        {
-                                            financeClick(item);
-                                        }
-                                    }}
                                     key={i}
-                                    className="list-group-item"
-                                    // class="list-group-item list-group-item-action disabled"
+                                    class="list-group-item list-group-item-action disabled"
                                 >
                                     {item.isPlus ? (
                                         <p className="item_amount">

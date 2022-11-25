@@ -52,8 +52,6 @@ function App() {
                     minus={minus}
                     setMinus={setMinus}
                     ref={myRef}
-                    buttonClick={buttonClick}
-                    setButtonClick={setButtonClick}
                 />
             </>
         );

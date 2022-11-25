@@ -161,6 +161,7 @@ const Calendar = forwardRef(
                 );
             });
         };
+        
         useEffect(() => {
             getPlan();
             getFinance();
