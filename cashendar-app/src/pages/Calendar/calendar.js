@@ -21,7 +21,7 @@ import {
 import { useMemo } from "react";
 
 import "./calendar.css";
-import DateSelected from "../DateSelected/dateselected";
+import DateSelected from "../DateSelected/dateUnselected";
 import DateDetail from "../DateSelected/dateDetail";
 
 // 한국 시간으로 맞추기 전 Date 객체
@@ -62,7 +62,6 @@ const Calendar = forwardRef(
         const [eventList, setEventList] = useState([]); // 일정 목록 저장 상태
         const [financeEList, setFinanceEList] = useState([]); // 수입 지출 목록 저장 상태
         const [selectedDate, selSelectedDate] = useState(false); // 날 선택 여부
-        const [buttonClick2, setButtonClick2] = useState(false);
 
         var planList = [];
         var financeList = [];
@@ -132,15 +131,6 @@ const Calendar = forwardRef(
             });
         };
 
-        // 원래 코드
-        // const getFinance = async () => {
-        //     const data = await getDocs(query(financeCollection, orderBy('date', 'asc')));
-        //     const dataList = data.docs.map((doc) => ({
-        //         ...doc.data(),
-        //         id: doc.id,
-        //     }));
-        //     planList = dataList.map((value) => ({
-        // 수입 지출 삭제코드
         const getFinance = async () => {
             const data = query(financeCollection, orderBy("date", "asc"));
             onSnapshot(data, (querySnapshot) => {
@@ -176,7 +166,7 @@ const Calendar = forwardRef(
             getFinance();
         }, []);
 
-        useMemo(async () => {
+        useEffect(async () => {
             const userInfoRef = doc(db, "userInfo", user);
             const userInfoDoc = await getDoc(userInfoRef);
             if (userInfoDoc.exists()) {
@@ -194,12 +184,6 @@ const Calendar = forwardRef(
                 });
             }
         }, [user]);
-
-        if (buttonClick2 === true) {
-            getPlan();
-            getFinance();
-            setButtonClick2(false);
-        }
 
         return (
             <div className="calendar-container">
@@ -264,7 +248,6 @@ const Calendar = forwardRef(
                             getPlane={getPlan}
                             getFinance={getFinance}
                             financeEList={financeEList}
-                            buttonClick2={(check) => setButtonClick2(check)}
                         />
                     )}
                     {!selectedDate && (

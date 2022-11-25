@@ -1,5 +1,5 @@
 import React from "react";
-import DateSelected from "./dateselected";
+import DateSelected from "./dateUnselected";
 import { Stack } from "react-bootstrap";
 import { useState, useEffect, useMemo } from "react";
 import BudgetModal from "./setBudgetModal";
@@ -10,7 +10,7 @@ import ReactApexChart from "react-apexcharts";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../fbase/fbase";
 
-function Date({
+function Stat({
     user,
     eventList,
     financeEList,
@@ -258,4 +258,4 @@ function Date({
     );
 }
 
-export default Date;
+export default Stat;
